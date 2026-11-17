@@ -1,0 +1,340 @@
+{
+  "sources": {
+    "moh-heqip-2018": {
+      "name": "Ministry of Health H-EQIP Progress Report, January?December 2018 (published 2019-07-31)",
+      "url": "https://moh.gov.kh/content/uploads/2017/05/3.-Progress-Report-H-EQIP-Jan-Dec-2018-July-31-Final.pdf",
+      "publishedOn": "2019-07-31"
+    },
+    "moh-national-2024": {
+      "name": "Ministry of Health national hospital count/list quoted in Cambodia NIS 2024 policy brief",
+      "url": "https://dev.nis.gov.kh/nis/Policy_Brief/G5_D2P_Policy_Brief_Eng%2005_10_2024.pdf",
+      "publishedOn": "2024-10-05"
+    }
+  },
+  "facilities": [
+    {
+      "name": "Cambodia-Japan Friendship Provincial Hospital",
+      "provinceCode": "01",
+      "facilityType": "ProvincialHospital",
+      "sourceKey": "moh-heqip-2018:01:cambodia-japan-friendship-provincial-hospital",
+      "sourceUrl": "https://moh.gov.kh/content/uploads/2017/05/3.-Progress-Report-H-EQIP-Jan-Dec-2018-July-31-Final.pdf",
+      "sourcePublishedOn": "2019-07-31",
+      "ownership": "Public"
+    },
+    {
+      "name": "Battambang Provincial Hospital",
+      "provinceCode": "02",
+      "facilityType": "ProvincialHospital",
+      "sourceKey": "moh-heqip-2018:02:battambang-provincial-hospital",
+      "sourceUrl": "https://moh.gov.kh/content/uploads/2017/05/3.-Progress-Report-H-EQIP-Jan-Dec-2018-July-31-Final.pdf",
+      "sourcePublishedOn": "2019-07-31",
+      "ownership": "Public"
+    },
+    {
+      "name": "Kampong Cham Provincial Hospital",
+      "provinceCode": "03",
+      "facilityType": "ProvincialHospital",
+      "sourceKey": "moh-heqip-2018:03:kampong-cham-provincial-hospital",
+      "sourceUrl": "https://moh.gov.kh/content/uploads/2017/05/3.-Progress-Report-H-EQIP-Jan-Dec-2018-July-31-Final.pdf",
+      "sourcePublishedOn": "2019-07-31",
+      "ownership": "Public"
+    },
+    {
+      "name": "Kampong Chhnang Provincial Hospital",
+      "provinceCode": "04",
+      "facilityType": "ProvincialHospital",
+      "sourceKey": "moh-heqip-2018:04:kampong-chhnang-provincial-hospital",
+      "sourceUrl": "https://moh.gov.kh/content/uploads/2017/05/3.-Progress-Report-H-EQIP-Jan-Dec-2018-July-31-Final.pdf",
+      "sourcePublishedOn": "2019-07-31",
+      "ownership": "Public"
+    },
+    {
+      "name": "Kampong Speu Provincial Hospital",
+      "provinceCode": "05",
+      "facilityType": "ProvincialHospital",
+      "sourceKey": "moh-heqip-2018:05:kampong-speu-provincial-hospital",
+      "sourceUrl": "https://moh.gov.kh/content/uploads/2017/05/3.-Progress-Report-H-EQIP-Jan-Dec-2018-July-31-Final.pdf",
+      "sourcePublishedOn": "2019-07-31",
+      "ownership": "Public"
+    },
+    {
+      "name": "Kampong Thom Provincial Hospital",
+      "provinceCode": "06",
+      "facilityType": "ProvincialHospital",
+      "sourceKey": "moh-heqip-2018:06:kampong-thom-provincial-hospital",
+      "sourceUrl": "https://moh.gov.kh/content/uploads/2017/05/3.-Progress-Report-H-EQIP-Jan-Dec-2018-July-31-Final.pdf",
+      "sourcePublishedOn": "2019-07-31",
+      "ownership": "Public"
+    },
+    {
+      "name": "Kampot Provincial Hospital",
+      "provinceCode": "07",
+      "facilityType": "ProvincialHospital",
+      "sourceKey": "moh-heqip-2018:07:kampot-provincial-hospital",
+      "sourceUrl": "https://moh.gov.kh/content/uploads/2017/05/3.-Progress-Report-H-EQIP-Jan-Dec-2018-July-31-Final.pdf",
+      "sourcePublishedOn": "2019-07-31",
+      "ownership": "Public"
+    },
+    {
+      "name": "Chey Chumneas Provincial Hospital",
+      "provinceCode": "08",
+      "facilityType": "ProvincialHospital",
+      "sourceKey": "moh-heqip-2018:08:chey-chumneas-provincial-hospital",
+      "sourceUrl": "https://moh.gov.kh/content/uploads/2017/05/3.-Progress-Report-H-EQIP-Jan-Dec-2018-July-31-Final.pdf",
+      "sourcePublishedOn": "2019-07-31",
+      "ownership": "Public"
+    },
+    {
+      "name": "Koh Kong Provincial Hospital",
+      "provinceCode": "09",
+      "facilityType": "ProvincialHospital",
+      "sourceKey": "moh-heqip-2018:09:koh-kong-provincial-hospital",
+      "sourceUrl": "https://moh.gov.kh/content/uploads/2017/05/3.-Progress-Report-H-EQIP-Jan-Dec-2018-July-31-Final.pdf",
+      "sourcePublishedOn": "2019-07-31",
+      "ownership": "Public"
+    },
+    {
+      "name": "Kratie Provincial Hospital",
+      "provinceCode": "10",
+      "facilityType": "ProvincialHospital",
+      "sourceKey": "moh-heqip-2018:10:kratie-provincial-hospital",
+      "sourceUrl": "https://moh.gov.kh/content/uploads/2017/05/3.-Progress-Report-H-EQIP-Jan-Dec-2018-July-31-Final.pdf",
+      "sourcePublishedOn": "2019-07-31",
+      "ownership": "Public"
+    },
+    {
+      "name": "Mondul Kiri Provincial Hospital",
+      "provinceCode": "11",
+      "facilityType": "ProvincialHospital",
+      "sourceKey": "moh-heqip-2018:11:mondul-kiri-provincial-hospital",
+      "sourceUrl": "https://moh.gov.kh/content/uploads/2017/05/3.-Progress-Report-H-EQIP-Jan-Dec-2018-July-31-Final.pdf",
+      "sourcePublishedOn": "2019-07-31",
+      "ownership": "Public"
+    },
+    {
+      "name": "Preah Vihear Provincial Hospital",
+      "provinceCode": "13",
+      "facilityType": "ProvincialHospital",
+      "sourceKey": "moh-heqip-2018:13:preah-vihear-provincial-hospital",
+      "sourceUrl": "https://moh.gov.kh/content/uploads/2017/05/3.-Progress-Report-H-EQIP-Jan-Dec-2018-July-31-Final.pdf",
+      "sourcePublishedOn": "2019-07-31",
+      "ownership": "Public"
+    },
+    {
+      "name": "Prey Veng Provincial Hospital",
+      "provinceCode": "14",
+      "facilityType": "ProvincialHospital",
+      "sourceKey": "moh-heqip-2018:14:prey-veng-provincial-hospital",
+      "sourceUrl": "https://moh.gov.kh/content/uploads/2017/05/3.-Progress-Report-H-EQIP-Jan-Dec-2018-July-31-Final.pdf",
+      "sourcePublishedOn": "2019-07-31",
+      "ownership": "Public"
+    },
+    {
+      "name": "Pursat Provincial Hospital",
+      "provinceCode": "15",
+      "facilityType": "ProvincialHospital",
+      "sourceKey": "moh-heqip-2018:15:pursat-provincial-hospital",
+      "sourceUrl": "https://moh.gov.kh/content/uploads/2017/05/3.-Progress-Report-H-EQIP-Jan-Dec-2018-July-31-Final.pdf",
+      "sourcePublishedOn": "2019-07-31",
+      "ownership": "Public"
+    },
+    {
+      "name": "Ratanakiri Provincial Hospital",
+      "provinceCode": "16",
+      "facilityType": "ProvincialHospital",
+      "sourceKey": "moh-heqip-2018:16:ratanakiri-provincial-hospital",
+      "sourceUrl": "https://moh.gov.kh/content/uploads/2017/05/3.-Progress-Report-H-EQIP-Jan-Dec-2018-July-31-Final.pdf",
+      "sourcePublishedOn": "2019-07-31",
+      "ownership": "Public"
+    },
+    {
+      "name": "Siem Reap Provincial Hospital",
+      "provinceCode": "17",
+      "facilityType": "ProvincialHospital",
+      "sourceKey": "moh-heqip-2018:17:siem-reap-provincial-hospital",
+      "sourceUrl": "https://moh.gov.kh/content/uploads/2017/05/3.-Progress-Report-H-EQIP-Jan-Dec-2018-July-31-Final.pdf",
+      "sourcePublishedOn": "2019-07-31",
+      "ownership": "Public"
+    },
+    {
+      "name": "Preah Sihanouk Ville Provincial Hospital",
+      "provinceCode": "18",
+      "facilityType": "ProvincialHospital",
+      "sourceKey": "moh-heqip-2018:18:preah-sihanouk-ville-provincial-hospital",
+      "sourceUrl": "https://moh.gov.kh/content/uploads/2017/05/3.-Progress-Report-H-EQIP-Jan-Dec-2018-July-31-Final.pdf",
+      "sourcePublishedOn": "2019-07-31",
+      "ownership": "Public"
+    },
+    {
+      "name": "Stung Treng Provincial Hospital",
+      "provinceCode": "19",
+      "facilityType": "ProvincialHospital",
+      "sourceKey": "moh-heqip-2018:19:stung-treng-provincial-hospital",
+      "sourceUrl": "https://moh.gov.kh/content/uploads/2017/05/3.-Progress-Report-H-EQIP-Jan-Dec-2018-July-31-Final.pdf",
+      "sourcePublishedOn": "2019-07-31",
+      "ownership": "Public"
+    },
+    {
+      "name": "Svay Rieng Provincial Hospital",
+      "provinceCode": "20",
+      "facilityType": "ProvincialHospital",
+      "sourceKey": "moh-heqip-2018:20:svay-rieng-provincial-hospital",
+      "sourceUrl": "https://moh.gov.kh/content/uploads/2017/05/3.-Progress-Report-H-EQIP-Jan-Dec-2018-July-31-Final.pdf",
+      "sourcePublishedOn": "2019-07-31",
+      "ownership": "Public"
+    },
+    {
+      "name": "Takeo Provincial Hospital",
+      "provinceCode": "21",
+      "facilityType": "ProvincialHospital",
+      "sourceKey": "moh-heqip-2018:21:takeo-provincial-hospital",
+      "sourceUrl": "https://moh.gov.kh/content/uploads/2017/05/3.-Progress-Report-H-EQIP-Jan-Dec-2018-July-31-Final.pdf",
+      "sourcePublishedOn": "2019-07-31",
+      "ownership": "Public"
+    },
+    {
+      "name": "Oddar Meanchey Provincial Hospital",
+      "provinceCode": "22",
+      "facilityType": "ProvincialHospital",
+      "sourceKey": "moh-heqip-2018:22:oddar-meanchey-provincial-hospital",
+      "sourceUrl": "https://moh.gov.kh/content/uploads/2017/05/3.-Progress-Report-H-EQIP-Jan-Dec-2018-July-31-Final.pdf",
+      "sourcePublishedOn": "2019-07-31",
+      "ownership": "Public"
+    },
+    {
+      "name": "Pailin Provincial Hospital",
+      "provinceCode": "24",
+      "facilityType": "ProvincialHospital",
+      "sourceKey": "moh-heqip-2018:24:pailin-provincial-hospital",
+      "sourceUrl": "https://moh.gov.kh/content/uploads/2017/05/3.-Progress-Report-H-EQIP-Jan-Dec-2018-July-31-Final.pdf",
+      "sourcePublishedOn": "2019-07-31",
+      "ownership": "Public"
+    },
+    {
+      "name": "Kroch Chhmar Provincial Hospital",
+      "provinceCode": "25",
+      "facilityType": "ProvincialHospital",
+      "sourceKey": "moh-heqip-2018:25:kroch-chhmar-provincial-hospital",
+      "sourceUrl": "https://moh.gov.kh/content/uploads/2017/05/3.-Progress-Report-H-EQIP-Jan-Dec-2018-July-31-Final.pdf",
+      "sourcePublishedOn": "2019-07-31",
+      "ownership": "Public"
+    },
+    {
+      "name": "Kep Referral Hospital",
+      "provinceCode": "23",
+      "facilityType": "ReferralHospital",
+      "sourceKey": "moh-heqip-2018:23:kep-referral-hospital",
+      "sourceUrl": "https://moh.gov.kh/content/uploads/2017/05/3.-Progress-Report-H-EQIP-Jan-Dec-2018-July-31-Final.pdf",
+      "sourcePublishedOn": "2019-07-31",
+      "ownership": "Public"
+    },
+    {
+      "name": "Calmette Hospital",
+      "provinceCode": "12",
+      "facilityType": "NationalHospital",
+      "sourceKey": "moh-national-2024:12:calmette-hospital",
+      "sourceUrl": "https://dev.nis.gov.kh/nis/Policy_Brief/G5_D2P_Policy_Brief_Eng%2005_10_2024.pdf",
+      "sourcePublishedOn": "2024-10-05",
+      "ownership": "Public"
+    },
+    {
+      "name": "Ang Duong Hospital",
+      "provinceCode": "12",
+      "facilityType": "NationalHospital",
+      "sourceKey": "moh-national-2024:12:ang-duong-hospital",
+      "sourceUrl": "https://dev.nis.gov.kh/nis/Policy_Brief/G5_D2P_Policy_Brief_Eng%2005_10_2024.pdf",
+      "sourcePublishedOn": "2024-10-05",
+      "ownership": "Public"
+    },
+    {
+      "name": "Preah Kosamak Hospital",
+      "provinceCode": "12",
+      "facilityType": "NationalHospital",
+      "sourceKey": "moh-national-2024:12:preah-kosamak-hospital",
+      "sourceUrl": "https://dev.nis.gov.kh/nis/Policy_Brief/G5_D2P_Policy_Brief_Eng%2005_10_2024.pdf",
+      "sourcePublishedOn": "2024-10-05",
+      "ownership": "Public"
+    },
+    {
+      "name": "Khmer-Soviet Friendship Hospital",
+      "provinceCode": "12",
+      "facilityType": "NationalHospital",
+      "sourceKey": "moh-national-2024:12:khmer-soviet-friendship-hospital",
+      "sourceUrl": "https://dev.nis.gov.kh/nis/Policy_Brief/G5_D2P_Policy_Brief_Eng%2005_10_2024.pdf",
+      "sourcePublishedOn": "2024-10-05",
+      "ownership": "Public"
+    },
+    {
+      "name": "National Pediatric Hospital",
+      "provinceCode": "12",
+      "facilityType": "NationalHospital",
+      "sourceKey": "moh-national-2024:12:national-pediatric-hospital",
+      "sourceUrl": "https://dev.nis.gov.kh/nis/Policy_Brief/G5_D2P_Policy_Brief_Eng%2005_10_2024.pdf",
+      "sourcePublishedOn": "2024-10-05",
+      "ownership": "Public"
+    },
+    {
+      "name": "Kantha Bopha Hospital",
+      "provinceCode": "12",
+      "facilityType": "NationalHospital",
+      "sourceKey": "moh-national-2024:12:kantha-bopha-hospital",
+      "sourceUrl": "https://dev.nis.gov.kh/nis/Policy_Brief/G5_D2P_Policy_Brief_Eng%2005_10_2024.pdf",
+      "sourcePublishedOn": "2024-10-05",
+      "ownership": "Public"
+    },
+    {
+      "name": "Jayavarman VII Hospital",
+      "provinceCode": "12",
+      "facilityType": "NationalHospital",
+      "sourceKey": "moh-national-2024:12:jayavarman-vii-hospital",
+      "sourceUrl": "https://dev.nis.gov.kh/nis/Policy_Brief/G5_D2P_Policy_Brief_Eng%2005_10_2024.pdf",
+      "sourcePublishedOn": "2024-10-05",
+      "ownership": "Public"
+    },
+    {
+      "name": "National Center for Tuberculosis and Leprosy Control",
+      "provinceCode": "12",
+      "facilityType": "NationalHospital",
+      "sourceKey": "moh-national-2024:12:national-center-for-tuberculosis-and-leprosy-control",
+      "sourceUrl": "https://dev.nis.gov.kh/nis/Policy_Brief/G5_D2P_Policy_Brief_Eng%2005_10_2024.pdf",
+      "sourcePublishedOn": "2024-10-05",
+      "ownership": "Public"
+    },
+    {
+      "name": "Techo Santepheap Hospital National",
+      "provinceCode": "12",
+      "facilityType": "NationalHospital",
+      "sourceKey": "moh-national-2024:12:techo-santepheap-hospital-national",
+      "sourceUrl": "https://dev.nis.gov.kh/nis/Policy_Brief/G5_D2P_Policy_Brief_Eng%2005_10_2024.pdf",
+      "sourcePublishedOn": "2024-10-05",
+      "ownership": "Public"
+    },
+    {
+      "name": "Sihanouk Hospital Center of HOPE",
+      "provinceCode": "12",
+      "facilityType": "NationalHospital",
+      "sourceKey": "moh-national-2024:12:sihanouk-hospital-center-of-hope",
+      "sourceUrl": "https://dev.nis.gov.kh/nis/Policy_Brief/G5_D2P_Policy_Brief_Eng%2005_10_2024.pdf",
+      "sourcePublishedOn": "2024-10-05",
+      "ownership": "Public"
+    },
+    {
+      "name": "Luang Mae Hospital",
+      "provinceCode": "12",
+      "facilityType": "NationalHospital",
+      "sourceKey": "moh-national-2024:12:luang-mae-hospital",
+      "sourceUrl": "https://dev.nis.gov.kh/nis/Policy_Brief/G5_D2P_Policy_Brief_Eng%2005_10_2024.pdf",
+      "sourcePublishedOn": "2024-10-05",
+      "ownership": "Public"
+    },
+    {
+      "name": "National Maternal and Child Health Center",
+      "provinceCode": "12",
+      "facilityType": "NationalHospital",
+      "sourceKey": "moh-national-2024:12:national-maternal-and-child-health-center",
+      "sourceUrl": "https://dev.nis.gov.kh/nis/Policy_Brief/G5_D2P_Policy_Brief_Eng%2005_10_2024.pdf",
+      "sourcePublishedOn": "2024-10-05",
+      "ownership": "Public"
+    }
+  ]
+}

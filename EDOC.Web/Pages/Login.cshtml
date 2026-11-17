@@ -1,0 +1,29 @@
+@page "/login"
+@model EDOC.Web.Pages.LoginModel
+@{
+    ViewData["Title"] = "Sign in";
+}
+<section class="login-layout">
+    <div class="login-story">
+        <div class="eyebrow">E-DOC HEALTHCARE</div>
+        <h1>Care runs better<br />when teams connect.</h1>
+        <p>A secure workspace for healthcare administrators and hospital teams across Cambodia.</p>
+        <div class="story-pill"><span class="pulse-dot"></span> Connected to your E-DOC healthcare network</div>
+    </div>
+    <div class="glass-panel login-panel">
+        <div class="eyebrow">WELCOME BACK</div>
+        <h2>Sign in to your portal</h2>
+        <p class="muted">Use your E-DOC administrator or hospital staff email or phone number.</p>
+        <form method="post" class="form-stack">
+            <label asp-for="Input.LoginIdentifier">Email or phone number</label>
+            <input asp-for="Input.LoginIdentifier" type="text" inputmode="text" autocomplete="username" placeholder="you@hospital.org or 096123456" />
+            <span asp-validation-for="Input.LoginIdentifier" class="field-error"></span>
+            <label asp-for="Input.Password">Password</label>
+            <input asp-for="Input.Password" type="password" autocomplete="current-password" placeholder="Enter your password" />
+            <span asp-validation-for="Input.Password" class="field-error"></span>
+            @if (!string.IsNullOrWhiteSpace(Model.Message)) { <div class="alert alert-error" role="alert">@Model.Message</div> }
+            <button class="button button-primary button-wide" type="submit">Sign in securely <span aria-hidden="true">→</span></button>
+        </form>
+        <div class="login-footnote"><span class="lock-icon">⌑</span> Your account access is protected and role restricted.</div>
+    </div>
+</section>

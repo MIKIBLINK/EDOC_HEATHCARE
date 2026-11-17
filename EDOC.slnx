@@ -1,0 +1,7 @@
+<Solution>
+  <Project Path="EDOC.Api.Tests/EDOC.Api.Tests.csproj" />
+  <Project Path="EDOC.Api/EDOC.Api.csproj" />
+  <Project Path="EDOC.Localization/EDOC.Localization.csproj" />
+  <Project Path="EDOC.Mobile/EDOC.Mobile.csproj" />
+  <Project Path="EDOC.Web/EDOC.Web.csproj" />
+</Solution>

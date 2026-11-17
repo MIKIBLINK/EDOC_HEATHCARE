@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:vm="clr-namespace:EDOC.Mobile.ViewModels"
+             xmlns:models="clr-namespace:EDOC.Mobile.Models"
+             xmlns:controls="clr-namespace:EDOC.Mobile.Controls"
+             x:Class="EDOC.Mobile.MedicalRecordsPage"
+             x:DataType="vm:MedicalRecordsViewModel">
+    <Grid Background="{StaticResource CanvasGlowBrush}" RowDefinitions="Auto,Auto,*">
+        <VerticalStackLayout Grid.Row="0" Padding="{StaticResource PageInset}" Spacing="5" MaximumWidthRequest="760" HorizontalOptions="Center">
+            <Label Text="{Binding Title}" Style="{StaticResource PageTitle}" />
+            <Label Text="{Binding Intro}" Style="{StaticResource BodySecondary}" />
+        </VerticalStackLayout>
+
+        <VerticalStackLayout Grid.Row="1" Padding="22,4,22,8" Spacing="10" MaximumWidthRequest="760" HorizontalOptions="Center">
+            <Border Style="{StaticResource GlassCard}" Padding="16">
+                <Grid ColumnDefinitions="36,*" ColumnSpacing="12">
+                    <Image Source="records.svg" WidthRequest="25" HeightRequest="25" VerticalOptions="Center" />
+                    <Label Grid.Column="1" Text="{Binding Intro}" FontSize="13" LineBreakMode="WordWrap" VerticalOptions="Center" />
+                </Grid>
+            </Border>
+            <Button Text="{Binding SignInText}" Command="{Binding SignInCommand}" IsVisible="{Binding NeedsSignIn}" Style="{StaticResource PrimaryButton}" />
+        </VerticalStackLayout>
+
+        <RefreshView Grid.Row="2" Command="{Binding LoadCommand}" IsRefreshing="{Binding IsBusy}">
+            <CollectionView ItemsSource="{Binding Records}" SelectionMode="None" Margin="22,8" MaximumWidthRequest="716" HorizontalOptions="Center">
+                <CollectionView.EmptyView>
+                    <controls:EmptyStateView Message="{Binding StatusMessage}" />
+                </CollectionView.EmptyView>
+                <CollectionView.ItemTemplate>
+                    <DataTemplate x:DataType="models:ClinicalRecordCard">
+                        <Border Style="{StaticResource GlassCard}" Margin="0,0,0,14" Padding="17">
+                            <VerticalStackLayout Spacing="9">
+                                <Grid ColumnDefinitions="*,Auto" ColumnSpacing="8">
+                                    <Label Text="{Binding RecordType}" FontSize="17" FontAttributes="Bold" />
+                                    <Label Grid.Column="1" Text="{Binding RecordedAt, StringFormat='{0:dd MMM yyyy}'}" Style="{StaticResource BodySecondary}" VerticalOptions="Center" />
+                                </Grid>
+                                <Label Text="{Binding Summary}" Style="{StaticResource BodySecondary}" LineBreakMode="WordWrap" />
+                                <VerticalStackLayout BindableLayout.ItemsSource="{Binding Diagnoses}" Spacing="5">
+                                    <BindableLayout.ItemTemplate><DataTemplate x:DataType="models:DiagnosisCard">
+                                        <Border BackgroundColor="#101677D2" StrokeThickness="0" StrokeShape="RoundRectangle 14" Padding="12">
+                                            <VerticalStackLayout Spacing="3">
+                                                <Label Text="{Binding Display}" FontAttributes="Bold" FontSize="14" LineBreakMode="WordWrap" />
+                                                <Label Text="{Binding ClinicalStatus}" Style="{StaticResource BodySecondary}" FontSize="12" />
+                                                <Label Text="{Binding Notes}" Style="{StaticResource BodySecondary}" FontSize="12" />
+                                            </VerticalStackLayout>
+                                        </Border>
+                                    </DataTemplate></BindableLayout.ItemTemplate>
+                                </VerticalStackLayout>
+                                <VerticalStackLayout BindableLayout.ItemsSource="{Binding LabResults}" Spacing="5">
+                                    <BindableLayout.ItemTemplate><DataTemplate x:DataType="models:LabResultCard">
+                                        <Border BackgroundColor="#1022B573" StrokeThickness="0" StrokeShape="RoundRectangle 14" Padding="12">
+                                            <VerticalStackLayout Spacing="3">
+                                                <Label Text="{Binding TestName}" FontAttributes="Bold" FontSize="14" />
+                                                <Label Text="{Binding ResultValue}" Style="{StaticResource BodySecondary}" />
+                                                <Label Text="{Binding Status}" Style="{StaticResource BodySecondary}" FontSize="12" />
+                                            </VerticalStackLayout>
+                                        </Border>
+                                    </DataTemplate></BindableLayout.ItemTemplate>
+                                </VerticalStackLayout>
+                                <VerticalStackLayout BindableLayout.ItemsSource="{Binding Prescriptions}" Spacing="7">
+                                    <BindableLayout.ItemTemplate><DataTemplate x:DataType="models:PrescriptionCard">
+                                        <Border BackgroundColor="#10F5A623" StrokeThickness="0" StrokeShape="RoundRectangle 14" Padding="12">
+                                            <VerticalStackLayout Spacing="6">
+                                                <Label Text="{Binding LegacyMedication}" FontAttributes="Bold" FontSize="14" />
+                                                <VerticalStackLayout BindableLayout.ItemsSource="{Binding Items}" Spacing="5">
+                                                    <BindableLayout.ItemTemplate><DataTemplate x:DataType="models:PrescriptionItemCard">
+                                                        <VerticalStackLayout Spacing="2">
+                                                            <Label Text="{Binding MedicationName}" FontAttributes="Bold" FontSize="14" LineBreakMode="WordWrap" />
+                                                            <Label Text="{Binding Dose}" Style="{StaticResource BodySecondary}" />
+                                                            <Label Text="{Binding Frequency}" Style="{StaticResource BodySecondary}" FontSize="12" />
+                                                        </VerticalStackLayout>
+                                                    </DataTemplate></BindableLayout.ItemTemplate>
+                                                </VerticalStackLayout>
+                                            </VerticalStackLayout>
+                                        </Border>
+                                    </DataTemplate></BindableLayout.ItemTemplate>
+                                </VerticalStackLayout>
+                            </VerticalStackLayout>
+                        </Border>
+                    </DataTemplate>
+                </CollectionView.ItemTemplate>
+            </CollectionView>
+        </RefreshView>
+    </Grid>
+</ContentPage>

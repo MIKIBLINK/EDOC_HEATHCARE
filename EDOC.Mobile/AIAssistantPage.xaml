@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:vm="clr-namespace:EDOC.Mobile.ViewModels"
+             x:Class="EDOC.Mobile.AIAssistantPage"
+             x:DataType="vm:AIAssistantViewModel">
+    <Grid Background="{StaticResource CanvasGlowBrush}" RowDefinitions="Auto,*,Auto">
+        <Grid Padding="{StaticResource PageInset}" ColumnDefinitions="48,*" ColumnSpacing="12" MaximumWidthRequest="760" HorizontalOptions="Center">
+            <Border WidthRequest="46" HeightRequest="46" BackgroundColor="{StaticResource Mint}" StrokeThickness="0" StrokeShape="RoundRectangle 16" VerticalOptions="Center">
+                <Image Source="assistant.svg" WidthRequest="24" HeightRequest="24" HorizontalOptions="Center" VerticalOptions="Center" />
+            </Border>
+            <VerticalStackLayout Grid.Column="1" Spacing="4" VerticalOptions="Center">
+                <Label Text="{Binding Title}" Style="{StaticResource PageTitle}" />
+                <Label Text="{Binding Intro}" Style="{StaticResource BodySecondary}" />
+            </VerticalStackLayout>
+        </Grid>
+
+        <ScrollView Grid.Row="1">
+            <VerticalStackLayout Padding="22,2,22,18" Spacing="18" MaximumWidthRequest="720" HorizontalOptions="Center">
+                <Border Style="{StaticResource GlassCard}" Padding="17">
+                    <VerticalStackLayout Spacing="8">
+                        <Label Text="✦  E-DOC AI" Style="{StaticResource Eyebrow}" />
+                        <Label Text="{Binding Disclaimer}" FontSize="14" LineBreakMode="WordWrap" />
+                    </VerticalStackLayout>
+                </Border>
+
+                <Border Style="{StaticResource SubtleCard}" Padding="18">
+                    <Grid ColumnDefinitions="28,*" ColumnSpacing="10">
+                        <Label Text="!" FontSize="19" FontAttributes="Bold" TextColor="{StaticResource Emergency}" VerticalOptions="Start" />
+                        <VerticalStackLayout Grid.Column="1" Spacing="6">
+                            <Label Text="{Binding EmergencyText}" FontSize="14" FontAttributes="Bold" TextColor="{StaticResource Emergency}" />
+                            <Label Text="{Binding Intro}" Style="{StaticResource BodySecondary}" />
+                        </VerticalStackLayout>
+                    </Grid>
+                </Border>
+
+                <Label Text="{Binding StatusMessage}" TextColor="{StaticResource Warning}" FontSize="14" LineBreakMode="WordWrap" />
+                <Label Text="{Binding SuggestedQuestionsText}" Style="{StaticResource SectionHeader}" />
+                <Button Text="{Binding SuggestionOne}" Command="{Binding SelectQuestionCommand}" CommandParameter="{Binding SuggestionOne}" Style="{StaticResource SecondaryButton}" HorizontalOptions="Fill" />
+                <Button Text="{Binding SuggestionTwo}" Command="{Binding SelectQuestionCommand}" CommandParameter="{Binding SuggestionTwo}" Style="{StaticResource SecondaryButton}" HorizontalOptions="Fill" />
+                <Button Text="{Binding SuggestionThree}" Command="{Binding SelectQuestionCommand}" CommandParameter="{Binding SuggestionThree}" Style="{StaticResource SecondaryButton}" HorizontalOptions="Fill" />
+            </VerticalStackLayout>
+        </ScrollView>
+
+        <Border Grid.Row="2" Style="{StaticResource GlassCard}" Padding="10" Margin="22,6,22,22" MaximumWidthRequest="720" HorizontalOptions="Center">
+            <Grid ColumnDefinitions="Auto,*,Auto" ColumnSpacing="8">
+                <Button Text="+" IsEnabled="False" Style="{StaticResource IconButton}" VerticalOptions="End" SemanticProperties.Description="{Binding UnavailableText}" />
+                <Editor Grid.Column="1" Text="{Binding Prompt}" Placeholder="{Binding PromptHint}" AutoSize="TextChanges" MaximumHeightRequest="120" FontFamily="{DynamicResource AppFontFamily}" />
+                <Button Grid.Column="2" Text="{Binding SendText}" Command="{Binding SendCommand}" Style="{StaticResource PrimaryButton}" VerticalOptions="End" Padding="14,10" />
+            </Grid>
+        </Border>
+    </Grid>
+</ContentPage>

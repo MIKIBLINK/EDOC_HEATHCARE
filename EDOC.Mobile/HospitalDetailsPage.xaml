@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:vm="clr-namespace:EDOC.Mobile.ViewModels"
+             x:Class="EDOC.Mobile.HospitalDetailsPage"
+             x:DataType="vm:HospitalDetailsViewModel"
+             Title="E-DOC">
+    <Grid Background="{StaticResource CanvasGlowBrush}">
+        <ScrollView>
+        <VerticalStackLayout Padding="{StaticResource PageInset}" Spacing="18" MaximumWidthRequest="700" HorizontalOptions="Center">
+            <Border Style="{StaticResource GlassCard}" Padding="22">
+                <VerticalStackLayout Spacing="10">
+                    <Border WidthRequest="54" HeightRequest="54" BackgroundColor="{StaticResource Mint}" StrokeThickness="0" StrokeShape="RoundRectangle 18">
+                        <Image Source="hospital.svg" WidthRequest="28" HeightRequest="28" HorizontalOptions="Center" VerticalOptions="Center" />
+                    </Border>
+                    <Label Text="{Binding Hospital.Name}" Style="{StaticResource PageTitle}" />
+                    <Label Text="{Binding Hospital.NameKm}" Style="{StaticResource BodySecondary}" />
+                    <Label Text="{Binding Hospital.Address}" Style="{StaticResource BodySecondary}" />
+                    <Label Text="{Binding Hospital.ProvinceKm}" Style="{StaticResource BodySecondary}" />
+                    <Label Text="{Binding VerificationText}" Style="{StaticResource Eyebrow}" Margin="0,8,0,0" />
+                    <Label Text="{Binding VerificationStatusText}" TextColor="{StaticResource Warning}" FontAttributes="Bold" />
+                    <Label Text="{Binding OperationStatusText}" Style="{StaticResource Eyebrow}" />
+                    <Label Text="{Binding OperationalStatusLabel}" TextColor="{StaticResource Warning}" FontAttributes="Bold" />
+                    <Label Text="{Binding SourceText}" Style="{StaticResource BodySecondary}" />
+                    <Label Text="{Binding SourceDateText}" Style="{StaticResource BodySecondary}" />
+                    <Button Text="{Binding MapText}" Command="{Binding OpenMapCommand}" IsVisible="{Binding HasVerifiedCoordinates}" Style="{StaticResource SecondaryButton}" />
+                </VerticalStackLayout>
+            </Border>
+            <Label Text="{Binding ContactText}" Style="{StaticResource SectionTitle}" />
+            <Border Style="{StaticResource GlassCard}" Padding="18">
+                <VerticalStackLayout Spacing="8">
+                    <Label Text="{Binding Hospital.Phone}" FontSize="16" FontAttributes="Bold" />
+                    <Label Text="{Binding Hospital.Email}" Style="{StaticResource BodySecondary}" />
+                    <Label Text="{Binding HoursText}" Style="{StaticResource Eyebrow}" Margin="0,8,0,0" />
+                    <Label Text="{Binding Hospital.OpeningHours}" Style="{StaticResource BodySecondary}" />
+                </VerticalStackLayout>
+            </Border>
+            <Label Text="{Binding ServicesText}" Style="{StaticResource SectionTitle}" />
+            <VerticalStackLayout BindableLayout.ItemsSource="{Binding Hospital.Services}" Spacing="8">
+                <BindableLayout.ItemTemplate>
+                    <DataTemplate x:DataType="x:String">
+                        <Border Style="{StaticResource GlassCard}" Padding="14">
+                            <Label Text="{Binding .}" />
+                        </Border>
+                    </DataTemplate>
+                </BindableLayout.ItemTemplate>
+            </VerticalStackLayout>
+        </VerticalStackLayout>
+        </ScrollView>
+    </Grid>
+</ContentPage>

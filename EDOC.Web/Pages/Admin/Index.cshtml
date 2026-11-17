@@ -1,0 +1,73 @@
+@page "/admin"
+@model EDOC.Web.Pages.Admin.IndexModel
+@{
+    ViewData["Title"] = "Administrator overview";
+}
+<div class="page-heading">
+    <div><div class="eyebrow">ADMINISTRATION · E-DOC NETWORK</div><h1>Good care starts with a clear view.</h1><p class="muted">A live overview of your healthcare network.</p></div>
+    <div class="heading-actions"><a class="button button-primary" asp-page="/Admin/Doctors">+ Add doctor</a><a class="button button-secondary" asp-page="/Admin/Directory">Manage facility directory <span aria-hidden="true">→</span></a></div>
+</div>
+@if (!string.IsNullOrWhiteSpace(Model.Error)) { <div class="alert alert-error">@Model.Error</div> }
+@if (Model.Summary is not null)
+{
+    <section class="metric-grid">
+        <article class="metric-card"><span class="metric-icon blue">♙</span><span class="metric-label">Patients</span><strong>@Model.Summary.Patients.ToString("N0")</strong><span class="metric-foot">Registered in E-DOC</span></article>
+        <article class="metric-card"><span class="metric-icon teal">✚</span><span class="metric-label">Doctors</span><strong>@Model.Summary.Doctors.ToString("N0")</strong><span class="metric-foot">Across the network</span></article>
+        <article class="metric-card"><span class="metric-icon violet">⌂</span><span class="metric-label">Facilities</span><strong>@Model.Summary.Hospitals.ToString("N0")</strong><span class="metric-foot">Directory locations</span></article>
+        <article class="metric-card"><span class="metric-icon amber">▦</span><span class="metric-label">Appointments</span><strong>@Model.Summary.Appointments.ToString("N0")</strong><span class="metric-foot">@Model.Summary.UpcomingAppointments upcoming</span></article>
+    </section>
+    <section class="metric-grid" aria-label="Verification and activity statistics">
+        <article class="metric-card"><span class="metric-icon teal">✓</span><span class="metric-label">Verified doctors</span><strong>@Model.Summary.VerifiedDoctors.ToString("N0")</strong><span class="metric-foot">Active approved profiles</span></article>
+        <article class="metric-card"><span class="metric-icon amber">◷</span><span class="metric-label">Doctors pending</span><strong>@Model.Summary.PendingDoctors.ToString("N0")</strong><span class="metric-foot">Awaiting review</span></article>
+        <article class="metric-card"><span class="metric-icon blue">＋</span><span class="metric-label">NSSF hospitals</span><strong>@Model.Summary.NssfHospitals.ToString("N0")</strong><span class="metric-foot">Verified current status</span></article>
+        <article class="metric-card"><span class="metric-icon violet">◌</span><span class="metric-label">Non-NSSF hospitals</span><strong>@Model.Summary.NonNssfHospitals.ToString("N0")</strong><span class="metric-foot">Verified current status</span></article>
+        <article class="metric-card"><span class="metric-icon amber">◷</span><span class="metric-label">NSSF pending</span><strong>@Model.Summary.PendingNssfHospitals.ToString("N0")</strong><span class="metric-foot">Needs verification</span></article>
+        <article class="metric-card"><span class="metric-icon teal">♙</span><span class="metric-label">Hospital staff</span><strong>@Model.Summary.Staff.ToString("N0")</strong><span class="metric-foot">Assigned staff accounts</span></article>
+        <article class="metric-card"><span class="metric-icon blue">▦</span><span class="metric-label">Today's appointments</span><strong>@Model.Summary.TodayAppointments.ToString("N0")</strong><span class="metric-foot">Scheduled for today</span></article>
+        <article class="metric-card"><span class="metric-icon green">↗</span><span class="metric-label">Registrations this month</span><strong>@Model.Summary.MonthlyRegistrations.ToString("N0")</strong><span class="metric-foot">New E-DOC accounts</span></article>
+    </section>
+    <section class="content-grid">
+        <article class="glass-panel summary-panel"><div class="section-heading"><div><div class="eyebrow">APPOINTMENT FLOW</div><h2>Care activity</h2></div><span class="status-chip status-blue">Live summary</span></div>
+            <div class="activity-row"><div><strong>@Model.Summary.PendingAppointments</strong><span>Awaiting confirmation</span></div><div class="activity-bar"><span style="width:@Model.PendingWidth%"></span></div></div>
+            <div class="activity-row"><div><strong>@Model.Summary.UpcomingAppointments</strong><span>Upcoming appointments</span></div><div class="activity-bar teal-bar"><span style="width:@Model.UpcomingWidth%"></span></div></div>
+            <div class="activity-row"><div><strong>@Model.Summary.CompletedAppointments</strong><span>Completed appointments</span></div><div class="activity-bar green-bar"><span style="width:@Model.CompletedWidth%"></span></div></div>
+        </article>
+        <article class="glass-panel directory-callout"><div class="callout-icon">⌖</div><div class="eyebrow">CAMBODIA DIRECTORY</div><h2>Keep facility information trustworthy.</h2><p class="muted">Review facility details and verification evidence. Unverified NSSF status remains clearly marked.</p><a class="text-link" asp-page="/Admin/Directory">Open facility directory <span aria-hidden="true">→</span></a></article>
+    </section>
+    <section class="glass-panel table-panel admin-queue">
+        <div class="section-heading"><div><div class="eyebrow">CREDENTIAL REVIEW</div><h2>Doctor verification queue</h2></div><span class="status-chip status-amber">@Model.PendingDoctors.Count pending</span></div>
+        @if (Model.PendingDoctors.Count > 0)
+        {
+            <div class="table-scroll"><table><thead><tr><th>Doctor</th><th>Specialty</th><th>Hospital</th><th>Qualifications</th><th>Experience</th><th>Decision</th></tr></thead><tbody>
+            @foreach (var doctor in Model.PendingDoctors)
+            {
+                <tr><td><strong>@doctor.FullName</strong><br /><span class="muted">@doctor.Email</span></td><td>@doctor.Specialty</td><td>@(doctor.Hospital ?? "Not assigned")</td><td>@(doctor.Qualifications ?? "Not provided")</td><td>@doctor.YearsExperience years</td><td><div class="action-pair"><form method="post" asp-page-handler="DoctorApproval"><input type="hidden" name="doctorId" value="@doctor.Id" /><input type="hidden" name="approved" value="true" /><button class="button button-small button-primary" type="submit">Approve</button></form><form method="post" asp-page-handler="DoctorApproval"><input type="hidden" name="doctorId" value="@doctor.Id" /><input type="hidden" name="approved" value="false" /><button class="button button-small button-quiet" type="submit">Decline</button></form></div></td></tr>
+            }
+            </tbody></table></div>
+        }
+        else { <div class="empty-state">No doctor profiles are waiting for verification.</div> }
+    </section>
+    <section class="glass-panel table-panel admin-queue">
+        <div class="section-heading"><div><div class="eyebrow">ACCOUNT ACCESS</div><h2>User directory</h2></div><span class="status-chip status-blue">@Model.Users.Count accounts</span></div>
+        <form method="get" class="inline-search"><label class="search-field"><span>⌕</span><input name="search" value="@Model.Search" placeholder="Search name or email" /></label><button class="button button-secondary" type="submit">Search accounts</button></form>
+        @if (Model.Users.Count > 0)
+        {
+            <div class="table-scroll"><table><thead><tr><th>Account</th><th>Role</th><th>Access</th><th>Hospital staff assignment</th><th>Action</th></tr></thead><tbody>
+            @foreach (var user in Model.Users)
+            {
+                <tr><td><strong>@user.FullName</strong><br /><span class="muted">@user.Email</span></td><td>@string.Join(", ", user.Roles)</td><td><span class="status-chip @(user.IsActive ? "status-green" : "status-red")">@(user.IsActive ? "Active" : "Suspended")</span></td><td>
+                    @if (user.CanAssignHospital)
+                    {
+                        <form method="post" asp-page-handler="AssignHospitalAdmin" class="inline-form"><input type="hidden" name="userId" value="@user.Id" /><select name="hospitalId" required aria-label="Hospital for administrator role"><option value="">Select facility</option>@foreach (var hospital in Model.Hospitals) { <option value="@hospital.Id">@hospital.Name</option> }</select><button class="button button-small button-primary" type="submit">Assign hospital admin</button></form>
+                        <form method="post" asp-page-handler="AssignHospitalStaff" class="inline-form"><input type="hidden" name="userId" value="@user.Id" /><select name="hospitalId" required><option value="">Select facility</option>@foreach (var hospital in Model.Hospitals) { <option value="@hospital.Id">@hospital.Name@(hospital.Province is null ? "" : $" · {hospital.Province}")</option> }</select><button class="button button-small button-secondary" type="submit">Assign staff</button></form>
+                    }
+                    else { <span class="muted">Clinical and administrator roles are managed separately.</span> }
+                </td><td><form method="post" asp-page-handler="UserActivation"><input type="hidden" name="userId" value="@user.Id" /><input type="hidden" name="active" value="@(!user.IsActive)" /><button class="button button-small @(user.IsActive ? "button-quiet" : "button-primary")" type="submit">@(user.IsActive ? "Suspend" : "Reactivate")</button></form></td></tr>
+            }
+            </tbody></table></div>
+        }
+        else { <div class="empty-state">No accounts match this search.</div> }
+        @if (!string.IsNullOrWhiteSpace(Model.Message)) { <div class="alert @(Model.IsError ? "alert-error" : "alert-success")" role="status">@Model.Message</div> }
+    </section>
+}
+else if (string.IsNullOrWhiteSpace(Model.Error)) { <div class="loading-card">Loading secure network overview…</div> }

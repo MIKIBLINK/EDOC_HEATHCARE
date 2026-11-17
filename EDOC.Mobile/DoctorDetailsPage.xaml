@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:vm="clr-namespace:EDOC.Mobile.ViewModels"
+             x:Class="EDOC.Mobile.DoctorDetailsPage"
+             x:DataType="vm:DoctorDetailsViewModel">
+    <Grid Background="{StaticResource CanvasGlowBrush}">
+        <ScrollView>
+        <VerticalStackLayout Padding="{StaticResource PageInset}" Spacing="18" MaximumWidthRequest="700" HorizontalOptions="Center">
+            <Border Style="{StaticResource GlassCard}" Padding="22">
+                <Grid ColumnDefinitions="72,*" ColumnSpacing="16">
+                    <Border WidthRequest="68" HeightRequest="68" BackgroundColor="{StaticResource Mint}" StrokeThickness="0" StrokeShape="RoundRectangle 22" VerticalOptions="Start">
+                        <Image Source="doctors.svg" WidthRequest="34" HeightRequest="34" HorizontalOptions="Center" VerticalOptions="Center" />
+                    </Border>
+                    <VerticalStackLayout Grid.Column="1" Spacing="7">
+                        <Label Text="{Binding Doctor.FullName}" Style="{StaticResource PageTitle}" />
+                        <Border Style="{StaticResource Pill}" HorizontalOptions="Start">
+                            <Label Text="{Binding Doctor.Specialty}" FontSize="14" FontAttributes="Bold" TextColor="{StaticResource Blue}" />
+                        </Border>
+                        <Label Text="{Binding Doctor.Hospital}" Style="{StaticResource BodySecondary}" />
+                    </VerticalStackLayout>
+                    </Grid>
+            </Border>
+            <Label Text="{Binding SpecialtyLabel}" Style="{StaticResource SectionHeader}" Margin="2,2,0,0" />
+            <Border Style="{StaticResource GlassCard}" Padding="19">
+                <Grid ColumnDefinitions="*,Auto" RowDefinitions="Auto,Auto,Auto,Auto" ColumnSpacing="14" RowSpacing="16">
+                    <Label Text="{Binding QualificationsLabel}" Style="{StaticResource BodySecondary}" />
+                    <Label Grid.Column="1" Text="{Binding Doctor.Qualifications}" HorizontalTextAlignment="End" />
+                    <Label Grid.Row="1" Text="{Binding ExperienceLabel}" Style="{StaticResource BodySecondary}" />
+                    <Label Grid.Row="1" Grid.Column="1" Text="{Binding Doctor.YearsExperience}" HorizontalTextAlignment="End" />
+                    <Label Grid.Row="2" Text="{Binding HospitalLabel}" Style="{StaticResource BodySecondary}" />
+                    <Label Grid.Row="2" Grid.Column="1" Text="{Binding Doctor.Hospital}" HorizontalTextAlignment="End" />
+                    <Label Grid.Row="3" Text="{Binding FeeLabel}" Style="{StaticResource BodySecondary}" />
+                    <Label Grid.Row="3" Grid.Column="1" Text="{Binding Doctor.ConsultationFee, StringFormat='{0:N2}'}" HorizontalTextAlignment="End" />
+                </Grid>
+            </Border>
+            <Button Text="{Binding BookText}" Command="{Binding BookCommand}" Style="{StaticResource PrimaryButton}" Margin="0,4,0,0" />
+        </VerticalStackLayout>
+        </ScrollView>
+    </Grid>
+</ContentPage>

@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:vm="clr-namespace:EDOC.Mobile.ViewModels"
+             x:Class="EDOC.Mobile.MainPage"
+             x:DataType="vm:MainPageViewModel"
+             x:Name="RootPage"
+             Shell.NavBarIsVisible="False">
+    <Grid Background="{StaticResource CanvasGlowBrush}">
+        <ScrollView>
+            <VerticalStackLayout Padding="{StaticResource PageInset}" Spacing="22" MaximumWidthRequest="760" HorizontalOptions="Center">
+                <Grid ColumnDefinitions="*,Auto,Auto" ColumnSpacing="6">
+                    <VerticalStackLayout Spacing="5" VerticalOptions="Center">
+                        <Label Text="{Binding WelcomeLabel}" Style="{StaticResource Eyebrow}" />
+                        <Label Text="{Binding WelcomeText}" FontSize="26" FontAttributes="Bold" LineBreakMode="WordWrap" />
+                    </VerticalStackLayout>
+                    <Button Grid.Column="1" Text="{Binding LanguageButtonText}" Command="{Binding ToggleLanguageCommand}" Style="{StaticResource QuietButton}" VerticalOptions="Center" FontSize="12" Padding="10,8" />
+                    <Button Grid.Column="2" Text="" ImageSource="profile.svg" Command="{Binding OpenProfileCommand}" Style="{StaticResource IconButton}" VerticalOptions="Center" SemanticProperties.Description="{Binding ProfileText}" />
+                </Grid>
+
+                <Border Style="{StaticResource GlassInput}" Padding="8,0">
+                    <SearchBar Text="{Binding SearchQuery}"
+                               Placeholder="{Binding DoctorsText}"
+                               SearchCommand="{Binding SearchDoctorsCommand}"
+                               Style="{StaticResource SearchBarStyle}" />
+                </Border>
+
+                <Button Text="{Binding HospitalsActionText}"
+                        ImageSource="hospital.svg"
+                        ContentLayout="Left,12"
+                        Command="{Binding OpenHospitalsCommand}"
+                        Style="{StaticResource SecondaryButton}"
+                        HorizontalOptions="Fill"
+                        SemanticProperties.Hint="Open the hospital directory" />
+
+                <Border Style="{StaticResource GlassCard}" Padding="0">
+                    <Grid Background="{StaticResource HeroBrush}" Padding="24" RowDefinitions="Auto,Auto,Auto" ColumnDefinitions="*,Auto" RowSpacing="12">
+                        <Label Text="{Binding HomeText}" FontSize="14" TextColor="#E6F7FF" />
+                        <Label Grid.Row="1" Text="{Binding AvailabilityText}" FontSize="23" FontAttributes="Bold" TextColor="White" LineBreakMode="WordWrap" />
+                        <Button Grid.Row="2" Text="{Binding DoctorsText}" Command="{Binding ExploreDoctorsCommand}" Style="{StaticResource SecondaryButton}" HorizontalOptions="Start" />
+                        <Border Grid.Column="1" Grid.RowSpan="3" WidthRequest="58" HeightRequest="58" BackgroundColor="#35FFFFFF" StrokeThickness="0" StrokeShape="RoundRectangle 20" VerticalOptions="Center">
+                            <Image Source="doctors.svg" WidthRequest="30" HeightRequest="30" HorizontalOptions="Center" VerticalOptions="Center" />
+                        </Border>
+                    </Grid>
+                </Border>
+
+                <Grid ColumnDefinitions="*,Auto" ColumnSpacing="10">
+                    <VerticalStackLayout Spacing="3">
+                        <Label Text="{Binding ServicesText}" Style="{StaticResource SectionHeader}" />
+                        <Label Text="{Binding ServicesSubtitle}" Style="{StaticResource BodySecondary}" />
+                    </VerticalStackLayout>
+                    <Border Grid.Column="1" Style="{StaticResource Pill}" VerticalOptions="Center">
+                        <Label Text="{Binding AvailabilityText}" FontSize="12" FontAttributes="Bold" TextColor="{StaticResource Blue}" />
+                    </Border>
+                </Grid>
+                <Grid ColumnDefinitions="*,*" RowDefinitions="Auto,Auto,Auto" ColumnSpacing="12" RowSpacing="12">
+                    <Border Style="{StaticResource GlassCard}" Padding="16">
+                        <Border.GestureRecognizers><TapGestureRecognizer Command="{Binding ExploreDoctorsCommand}" /></Border.GestureRecognizers>
+                        <Grid ColumnDefinitions="42,*" ColumnSpacing="12">
+                            <Image Source="doctors.svg" WidthRequest="26" HeightRequest="26" VerticalOptions="Center" />
+                            <Label Grid.Column="1" Text="{Binding DoctorsText}" FontSize="15" FontAttributes="Bold" VerticalOptions="Center" />
+                        </Grid>
+                    </Border>
+                    <Border Grid.Column="1" Style="{StaticResource GlassCard}" Padding="16">
+                        <Border.GestureRecognizers><TapGestureRecognizer Command="{Binding OpenAppointmentsCommand}" /></Border.GestureRecognizers>
+                        <Grid ColumnDefinitions="42,*" ColumnSpacing="12">
+                            <Image Source="appointments.svg" WidthRequest="25" HeightRequest="25" VerticalOptions="Center" />
+                            <Label Grid.Column="1" Text="{Binding AppointmentsText}" FontSize="15" FontAttributes="Bold" VerticalOptions="Center" />
+                        </Grid>
+                    </Border>
+                    <Border Grid.Row="1" Style="{StaticResource GlassCard}" Padding="16">
+                        <Border.GestureRecognizers><TapGestureRecognizer Command="{Binding OpenAssistantCommand}" /></Border.GestureRecognizers>
+                        <Grid ColumnDefinitions="42,*" ColumnSpacing="12">
+                            <Image Source="assistant.svg" WidthRequest="25" HeightRequest="25" VerticalOptions="Center" />
+                            <Label Grid.Column="1" Text="{Binding AssistantActionText}" FontSize="15" FontAttributes="Bold" VerticalOptions="Center" />
+                        </Grid>
+                    </Border>
+                    <Border Grid.Row="1" Grid.Column="1" Style="{StaticResource GlassCard}" Padding="16">
+                        <Border.GestureRecognizers><TapGestureRecognizer Command="{Binding OpenRecordsCommand}" /></Border.GestureRecognizers>
+                        <Grid ColumnDefinitions="42,*" ColumnSpacing="12">
+                            <Image Source="records.svg" WidthRequest="25" HeightRequest="25" VerticalOptions="Center" />
+                            <Label Grid.Column="1" Text="{Binding RecordsActionText}" FontSize="15" FontAttributes="Bold" VerticalOptions="Center" />
+                        </Grid>
+                    </Border>
+                    <Border Grid.Row="2" Grid.ColumnSpan="2" Style="{StaticResource GlassCard}" Padding="16">
+                        <Border.GestureRecognizers><TapGestureRecognizer Command="{Binding OpenHealthCommand}" /></Border.GestureRecognizers>
+                        <Grid ColumnDefinitions="42,*" ColumnSpacing="12">
+                            <Image Source="records.svg" WidthRequest="25" HeightRequest="25" VerticalOptions="Center" />
+                            <Label Grid.Column="1" Text="{Binding HealthActionText}" FontSize="15" FontAttributes="Bold" VerticalOptions="Center" />
+                        </Grid>
+                    </Border>
+                </Grid>
+
+                <Border Style="{StaticResource SubtleCard}" Padding="18">
+                    <Grid ColumnDefinitions="38,*" ColumnSpacing="12">
+                        <Label Text="!" FontSize="21" FontAttributes="Bold" TextColor="{StaticResource Emergency}" VerticalOptions="Center" HorizontalOptions="Center" />
+                        <VerticalStackLayout Grid.Column="1" Spacing="4">
+                            <Label Text="{Binding EmergencyText}" FontSize="16" FontAttributes="Bold" TextColor="{StaticResource Emergency}" />
+                            <Label Text="{Binding EmergencyNoteText}" Style="{StaticResource BodySecondary}" />
+                        </VerticalStackLayout>
+                    </Grid>
+                </Border>
+            </VerticalStackLayout>
+        </ScrollView>
+    </Grid>
+</ContentPage>

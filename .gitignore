@@ -1,0 +1,23 @@
+**/bin/
+**/obj/
+artifacts/
+.vs/
+.idea/
+.runtime/
+*.user
+*.suo
+*.db
+*.mdf
+*.ldf
+EDOC.Api/App_Data/
+secrets.json
+*.publishsettings
+*.pfx
+*.jks
+*.keystore
+*.xcuserstate
+*.mobileprovision
+*.cer
+
+# VS Code C# Dev Tools - Auto-generated runners
+.vscodecsdt/Runners/

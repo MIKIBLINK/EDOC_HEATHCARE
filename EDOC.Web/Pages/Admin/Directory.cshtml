@@ -1,0 +1,57 @@
+@page "/admin/directory"
+@model EDOC.Web.Pages.Admin.DirectoryModel
+@{
+    ViewData["Title"] = "Facility directory";
+}
+<div class="page-heading">
+    <div><div class="eyebrow">DIRECTORY MANAGEMENT</div><h1>Healthcare facilities</h1><p class="muted">Facility verification is shown alongside the information available in E-DOC.</p></div>
+    <div class="heading-actions"><a class="button button-primary" asp-page="/Admin/EditFacility">+ Add facility</a><a class="button button-secondary" asp-page="/Admin/Specialties">Manage specialties</a><a class="button button-quiet" asp-page="/Admin/Index">← Overview</a></div>
+</div>
+<form method="get" class="filter-panel glass-panel">
+    <label class="search-field"><span>⌕</span><input name="search" value="@Model.Search" placeholder="Search hospital or province" /></label>
+    <select name="nssfStatus"><option value="">All NSSF statuses</option>@foreach (var status in Model.NssfOptions) { <option value="@status" selected="@(Model.NssfStatus == status)">@Model.StatusLabel(status)</option> }</select>
+    <button class="button button-primary" type="submit">Search</button>
+</form>
+@if (!string.IsNullOrWhiteSpace(Model.Message)) { <div class="alert @(Model.IsError ? "alert-error" : "alert-success")" role="status">@Model.Message</div> }
+@if (!string.IsNullOrWhiteSpace(Model.Error)) { <div class="alert alert-error">@Model.Error</div> }
+<div class="list-meta"><span><strong>@Model.Total</strong> facilities</span><span>Public information · Verification dates shown where available</span></div>
+<section class="facility-grid">
+    @foreach (var hospital in Model.Items)
+    {
+        <article class="facility-card glass-panel">
+            <div class="facility-top"><div class="facility-icon">⌂</div><span class="status-chip @Model.StatusClass(hospital.NssfStatus)">@Model.StatusLabel(hospital.NssfStatus, hospital.SourceUrl, hospital.VerifiedOn)</span></div>
+            <h2>@hospital.Name</h2>
+            @if (!string.IsNullOrWhiteSpace(hospital.NameKm)) { <div class="khmer-name">@hospital.NameKm</div> }
+            <p class="facility-location">@(hospital.Province ?? "Location pending")@(string.IsNullOrWhiteSpace(hospital.Address) ? "" : $" · {hospital.Address}")</p>
+            <div class="tag-row"><span class="tag">@Model.TypeLabel(hospital.FacilityType)</span><span class="tag">@hospital.Ownership</span><span class="tag">@Model.OperationalStatusLabel(hospital)</span></div>
+            <div class="facility-contact-list">
+                @if (!string.IsNullOrWhiteSpace(hospital.Phone)) { <a href="tel:@hospital.Phone">☎ @hospital.Phone</a> }
+                @if (!string.IsNullOrWhiteSpace(hospital.Email)) { <a href="mailto:@hospital.Email">✉ @hospital.Email</a> }
+                @if (!string.IsNullOrWhiteSpace(hospital.Website)) { <a href="@hospital.Website" target="_blank" rel="noopener noreferrer">Website ↗</a> }
+            </div>
+            @if (!string.IsNullOrWhiteSpace(hospital.OpeningHours)) { <p class="service-line"><strong>Hours:</strong> @hospital.OpeningHours</p> }
+            @if (hospital.Services.Count > 0) { <p class="service-line"><strong>Services:</strong> @string.Join(" · ", hospital.Services)</p> }
+            @if (Model.MapUrl(hospital) is { } mapUrl) { <a class="map-link" href="@mapUrl" target="_blank" rel="noopener noreferrer">Open verified location in Maps ↗</a> }
+            <div class="facility-foot"><span>@Model.ReviewDateLabel(hospital)</span>
+                <span class="facility-links">@if (!string.IsNullOrWhiteSpace(hospital.SourceUrl)) { <a href="@hospital.SourceUrl" target="_blank" rel="noopener noreferrer">Source ↗</a> }<a asp-page="/Admin/EditFacility" asp-route-id="@hospital.Id">Edit facility</a></span>
+            </div>
+        </article>
+    }
+</section>
+@if (Model.Items.Count == 0 && string.IsNullOrWhiteSpace(Model.Error)) { <div class="empty-state">No facilities match these filters.</div> }
+<div class="pagination-row">
+    @if (Model.CurrentPage > 1) { <a class="button button-quiet" asp-route-page="@(Model.CurrentPage - 1)" asp-route-search="@Model.Search" asp-route-nssfStatus="@Model.NssfStatus">← Previous</a> }
+    <span>Page @Model.CurrentPage of @Model.PageCount</span>
+    @if (Model.CurrentPage < Model.PageCount) { <a class="button button-quiet" asp-route-page="@(Model.CurrentPage + 1)" asp-route-search="@Model.Search" asp-route-nssfStatus="@Model.NssfStatus">Next →</a> }
+</div>
+<section class="glass-panel audit-panel">
+    <div class="section-heading"><div><div class="eyebrow">DIRECTORY GOVERNANCE</div><h2>Recent changes</h2></div><span class="status-chip status-blue">Audit trail</span></div>
+    @if (Model.Audit.Count == 0) { <p class="muted">No facility or specialty changes have been recorded yet.</p> }
+    else
+    {
+        <div class="audit-list">@foreach (var item in Model.Audit)
+        {
+            <div class="audit-item"><span class="audit-dot"></span><div><strong>@item.Action.Replace("directory.", "").Replace('.', ' ')</strong><span>@item.EntityType · @(item.ActorName ?? "Administrator") · @item.CreatedAt.ToLocalTime().ToString("dd MMM yyyy, h:mm tt")</span>@if (!string.IsNullOrWhiteSpace(item.Summary)) { <small>@item.Summary</small> }</div></div>
+        }</div>
+    }
+</section>

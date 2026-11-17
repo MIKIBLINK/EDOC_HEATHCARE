@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:vm="clr-namespace:EDOC.Mobile.ViewModels"
+             xmlns:models="clr-namespace:EDOC.Mobile.Models"
+             xmlns:controls="clr-namespace:EDOC.Mobile.Controls"
+             x:Class="EDOC.Mobile.AppointmentsPage"
+             x:DataType="vm:AppointmentsViewModel"
+             x:Name="AppointmentsRoot">
+    <Grid Background="{StaticResource CanvasGlowBrush}" RowDefinitions="Auto,*">
+        <Grid Padding="{StaticResource PageInset}" ColumnDefinitions="*,Auto" ColumnSpacing="10" MaximumWidthRequest="760" HorizontalOptions="Center">
+            <VerticalStackLayout Spacing="4" VerticalOptions="Center">
+                <Label Text="{Binding Title}" Style="{StaticResource PageTitle}" />
+                <Label Text="{Binding Intro}" Style="{StaticResource BodySecondary}" />
+            </VerticalStackLayout>
+            <Button Grid.Column="1" Text="{Binding BookText}" Command="{Binding BookCommand}" Style="{StaticResource PrimaryButton}" VerticalOptions="Center" Padding="16,12" />
+        </Grid>
+        <RefreshView Grid.Row="1" Command="{Binding LoadCommand}" IsRefreshing="{Binding IsBusy}">
+            <CollectionView ItemsSource="{Binding Appointments}" SelectionMode="None" Margin="22,8" MaximumWidthRequest="716" HorizontalOptions="Center">
+                <CollectionView.EmptyView>
+                    <controls:EmptyStateView Message="{Binding StatusMessage}" />
+                </CollectionView.EmptyView>
+                <CollectionView.ItemTemplate>
+                    <DataTemplate x:DataType="models:AppointmentCard">
+                        <Border Style="{StaticResource GlassCard}" Margin="0,0,0,14" Padding="18">
+                            <Grid ColumnDefinitions="*,Auto" RowDefinitions="Auto,Auto,Auto" ColumnSpacing="12" RowSpacing="9">
+                                <Label Text="{Binding DoctorName}" FontSize="17" FontAttributes="Bold" />
+                                <Label Grid.Row="1" Text="{Binding StartsAt, StringFormat='{0:ddd, dd MMM yyyy · HH:mm}'}" Style="{StaticResource BodySecondary}" />
+                                <Border Grid.Row="2" Style="{StaticResource Pill}" HorizontalOptions="Start">
+                                    <Label Text="{Binding Status}" FontSize="12" FontAttributes="Bold" TextColor="{StaticResource Blue}" />
+                                </Border>
+                                <Button Grid.Column="1" Grid.RowSpan="3" Text="{Binding Source={x:Reference AppointmentsRoot}, Path=BindingContext.CancelText}"
+                                        Command="{Binding Source={x:Reference AppointmentsRoot}, Path=BindingContext.CancelCommand}"
+                                        CommandParameter="{Binding .}" IsVisible="{Binding CanCancel}" Style="{StaticResource QuietButton}" VerticalOptions="Center" Padding="12,8" />
+                            </Grid>
+                        </Border>
+                    </DataTemplate>
+                </CollectionView.ItemTemplate>
+            </CollectionView>
+        </RefreshView>
+    </Grid>
+</ContentPage>

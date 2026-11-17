@@ -1,0 +1,25 @@
+@page "/admin/staff"
+@model EDOC.Web.Pages.Admin.StaffModel
+@{
+    ViewData["Title"] = "Staff management";
+}
+<div class="page-heading">
+    <div><div class="eyebrow">ADMINISTRATION · ACCESS CONTROL</div><h1>Hospital staff</h1><p class="muted">Review facility assignments and manage staff account access.</p></div>
+    <a class="button button-secondary" asp-page="/Admin/Index">Assign staff or hospital admins</a>
+</div>
+@if (!string.IsNullOrWhiteSpace(Model.Message)) { <div class="alert @(Model.IsError ? "alert-error" : "alert-success")" role="status">@Model.Message</div> }
+<section class="glass-panel table-panel">
+    <form method="get" class="inline-search"><label class="search-field"><span aria-hidden="true">⌕</span><input name="search" value="@Model.Search" placeholder="Search staff or facility" /></label><select name="hospitalId"><option value="">All hospitals</option>@foreach (var hospital in Model.Hospitals) { <option value="@hospital.Id" selected="@(hospital.Id == Model.HospitalId)">@hospital.Name</option> }</select><button class="button button-primary" type="submit">Filter staff</button></form>
+    <div class="section-heading"><div><div class="eyebrow">STAFF DIRECTORY</div><h2>@Model.Total.ToString("N0") facility assignments</h2></div></div>
+    @if (Model.Staff.Count > 0)
+    {
+        <div class="table-scroll"><table><thead><tr><th>Staff member</th><th>Role</th><th>Hospital</th><th>Assigned</th><th>Account</th><th>Action</th></tr></thead><tbody>
+        @foreach (var item in Model.Staff)
+        {
+            <tr><td><strong>@item.FullName</strong><br /><span class="muted">@(item.Email ?? item.PhoneNumber ?? "No contact provided")</span></td><td>Hospital staff / admin</td><td>@item.HospitalName</td><td>@item.AssignedAt.ToLocalTime().ToString("dd MMM yyyy")</td><td><span class="status-chip @(item.IsActive ? "status-green" : "status-red")">@(item.IsActive ? "Active" : "Suspended")</span></td><td><form method="post" asp-page-handler="Activation"><input type="hidden" name="userId" value="@item.UserId" /><input type="hidden" name="active" value="@(!item.IsActive)" /><input type="hidden" name="search" value="@Model.Search" /><input type="hidden" name="hospitalId" value="@Model.HospitalId" /><input type="hidden" name="pageNumber" value="@Model.PageNumber" /><button class="button button-small @(item.IsActive ? "button-quiet" : "button-primary")" type="submit">@(item.IsActive ? "Suspend" : "Reactivate")</button></form></td></tr>
+        }
+        </tbody></table></div>
+        <nav class="pagination" aria-label="Staff pages"><span class="muted">Page @Model.PageNumber of @Model.PageCount</span>@if (Model.PageNumber > 1) { <a class="button button-secondary button-small" asp-page="/Admin/Staff" asp-route-search="@Model.Search" asp-route-hospitalId="@Model.HospitalId" asp-route-pageNumber="@(Model.PageNumber - 1)">Previous</a> }@if (Model.PageNumber < Model.PageCount) { <a class="button button-secondary button-small" asp-page="/Admin/Staff" asp-route-search="@Model.Search" asp-route-hospitalId="@Model.HospitalId" asp-route-pageNumber="@(Model.PageNumber + 1)">Next</a> }</nav>
+    }
+    else { <div class="empty-state">No staff assignments match the filters.</div> }
+</section>

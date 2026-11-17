@@ -1,0 +1,42 @@
+@page "/admin/patients"
+@model EDOC.Web.Pages.Admin.PatientsModel
+@{
+    ViewData["Title"] = "Patient management";
+}
+<div class="page-heading">
+    <div><div class="eyebrow">ADMINISTRATION · ACCOUNTS</div><h1>Patient directory</h1><p class="muted">Manage patient account access. Clinical records are not shown here.</p></div>
+    <a class="button button-secondary" asp-page="/Admin/Index">Back to overview</a>
+</div>
+@if (!string.IsNullOrWhiteSpace(Model.Message)) { <div class="alert @(Model.IsError ? "alert-error" : "alert-success")" role="status">@Model.Message</div> }
+<section class="glass-panel table-panel">
+    <form method="get" class="inline-search">
+        <label class="search-field"><span aria-hidden="true">⌕</span><input name="search" value="@Model.Search" placeholder="Search name, phone or patient ID" /></label>
+        <select name="active" aria-label="Account status">
+            <option value="">All account statuses</option>
+            <option value="true" selected="@(Model.Active == true)">Active</option>
+            <option value="false" selected="@(Model.Active == false)">Suspended</option>
+        </select>
+        <button class="button button-primary" type="submit">Search patients</button>
+    </form>
+    <div class="section-heading"><div><div class="eyebrow">ACCOUNT DIRECTORY</div><h2>@Model.Total.ToString("N0") patient accounts</h2></div></div>
+    @if (Model.Patients.Count > 0)
+    {
+        <div class="table-scroll"><table><thead><tr><th>Patient</th><th>Phone</th><th>Email</th><th>Patient ID</th><th>Registered</th><th>Status</th><th>Access</th></tr></thead><tbody>
+        @foreach (var patient in Model.Patients)
+        {
+            <tr>
+                <td><strong>@patient.FullName</strong></td><td>@(patient.PhoneNumber ?? "—")</td><td>@(patient.Email ?? "—")</td>
+                <td><code>@patient.PatientId.ToString("N")[..10]</code></td><td>@patient.RegisteredAt.ToLocalTime().ToString("dd MMM yyyy")</td>
+                <td><span class="status-chip @(patient.IsActive ? "status-green" : "status-red")">@(patient.IsActive ? "Active" : "Suspended")</span></td>
+                <td><form method="post" asp-page-handler="Activation"><input type="hidden" name="userId" value="@patient.UserId" /><input type="hidden" name="active" value="@(!patient.IsActive)" /><input type="hidden" name="search" value="@Model.Search" /><input type="hidden" name="accountFilter" value="@Model.Active" /><input type="hidden" name="pageNumber" value="@Model.PageNumber" /><button class="button button-small @(patient.IsActive ? "button-quiet" : "button-primary")" type="submit">@(patient.IsActive ? "Suspend" : "Reactivate")</button></form></td>
+            </tr>
+        }
+        </tbody></table></div>
+        <nav class="pagination" aria-label="Patient pages">
+            <span class="muted">Page @Model.PageNumber of @Model.PageCount</span>
+            @if (Model.PageNumber > 1) { <a class="button button-secondary button-small" asp-page="/Admin/Patients" asp-route-search="@Model.Search" asp-route-active="@Model.Active" asp-route-pageNumber="@(Model.PageNumber - 1)">Previous</a> }
+            @if (Model.PageNumber < Model.PageCount) { <a class="button button-secondary button-small" asp-page="/Admin/Patients" asp-route-search="@Model.Search" asp-route-active="@Model.Active" asp-route-pageNumber="@(Model.PageNumber + 1)">Next</a> }
+        </nav>
+    }
+    else { <div class="empty-state">No patients match these filters.</div> }
+</section>

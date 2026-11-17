@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<ResourceDictionary xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml">
+    <Color x:Key="CanvasLight">#F4F8FC</Color>
+    <Color x:Key="SurfaceLight">#FFFFFF</Color>
+    <Color x:Key="SurfaceSecondaryLight">#F7FAFD</Color>
+    <Color x:Key="InkLight">#172B4D</Color>
+    <Color x:Key="MutedLight">#8293A8</Color>
+    <Color x:Key="BorderLight">#E4EDF5</Color>
+    <Color x:Key="TabBarLight">#FFFFFF</Color>
+</ResourceDictionary>

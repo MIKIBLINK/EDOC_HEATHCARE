@@ -1,0 +1,49 @@
+@page "/hospital-admin"
+@model EDOC.Web.Pages.HospitalAdmin.IndexModel
+@{
+    ViewData["Title"] = "Hospital administration";
+}
+<div class="page-heading">
+    <div><div class="eyebrow">FACILITY WORKSPACE · E-DOC</div><h1>Hospital operations</h1><p class="muted">Operational data is restricted to hospitals assigned to your account.</p></div>
+    @if (Model.Hospitals.Count > 1)
+    {
+        <form method="get" class="inline-form"><label for="hospitalId" class="muted">Hospital</label><select id="hospitalId" name="hospitalId" onchange="this.form.submit()">@foreach (var hospital in Model.Hospitals) { <option value="@hospital.Id" selected="@(hospital.Id == Model.HospitalId)">@hospital.Name</option> }</select></form>
+    }
+</div>
+@if (!string.IsNullOrWhiteSpace(Model.Error)) { <div class="alert alert-error" role="alert">@Model.Error</div> }
+@if (!string.IsNullOrWhiteSpace(Model.Message)) { <div class="alert @(Model.IsError ? "alert-error" : "alert-success")" role="status">@Model.Message</div> }
+@if (Model.SelectedHospital is not null)
+{
+    <section class="glass-panel directory-callout">
+        <div class="eyebrow">@Model.SelectedHospital.FacilityType · @(Model.SelectedHospital.Province ?? "Cambodia")</div>
+        <h2>@Model.SelectedHospital.Name</h2>
+        <p class="muted">@(Model.SelectedHospital.Address ?? "Address not recorded") · NSSF: @Model.SelectedHospital.NssfStatus</p>
+    </section>
+}
+@if (Model.Summary is not null)
+{
+    <section class="metric-grid" aria-label="Hospital statistics">
+        <article class="metric-card"><span class="metric-label">Doctors</span><strong>@Model.Summary.Doctors.ToString("N0")</strong><span class="metric-foot">Active facility profiles</span></article>
+        <article class="metric-card"><span class="metric-label">Verified doctors</span><strong>@Model.Summary.VerifiedDoctors.ToString("N0")</strong><span class="metric-foot">Approved and active</span></article>
+        <article class="metric-card"><span class="metric-label">Hospital staff</span><strong>@Model.Summary.Staff.ToString("N0")</strong><span class="metric-foot">Assigned to this facility</span></article>
+        <article class="metric-card"><span class="metric-label">Today's appointments</span><strong>@Model.Summary.TodayAppointments.ToString("N0")</strong><span class="metric-foot">Scheduled today</span></article>
+        <article class="metric-card"><span class="metric-label">Pending appointments</span><strong>@Model.Summary.PendingAppointments.ToString("N0")</strong><span class="metric-foot">Awaiting response</span></article>
+        <article class="metric-card"><span class="metric-label">Upcoming appointments</span><strong>@Model.Summary.UpcomingAppointments.ToString("N0")</strong><span class="metric-foot">Confirmed visits</span></article>
+    </section>
+    <section class="glass-panel table-panel">
+        <div class="section-heading"><div><div class="eyebrow">CARE OPERATIONS</div><h2>Hospital appointments</h2></div><span class="status-chip status-blue">@Model.Appointments.Count listed</span></div>
+        @if (Model.Appointments.Count > 0)
+        {
+            <div class="table-scroll"><table><thead><tr><th>Patient</th><th>Doctor</th><th>Specialty</th><th>Schedule</th><th>Status</th><th>Manage</th></tr></thead><tbody>
+            @foreach (var appointment in Model.Appointments)
+            {
+                <tr><td>@appointment.PatientName</td><td>@appointment.DoctorName</td><td>@appointment.Specialty</td><td>@appointment.StartsAt.ToLocalTime().ToString("dd MMM yyyy · h:mm tt")</td><td><span class="status-chip status-blue">@appointment.Status</span></td><td><div class="action-pair">
+                    @if (appointment.Status == "Pending") { <form method="post" asp-page-handler="Status"><input type="hidden" name="hospitalId" value="@Model.HospitalId" /><input type="hidden" name="appointmentId" value="@appointment.Id" /><input type="hidden" name="status" value="Confirmed" /><button class="button button-small button-primary" type="submit">Confirm</button></form><form method="post" asp-page-handler="Status"><input type="hidden" name="hospitalId" value="@Model.HospitalId" /><input type="hidden" name="appointmentId" value="@appointment.Id" /><input type="hidden" name="status" value="Cancelled" /><button class="button button-small button-quiet" type="submit">Cancel</button></form> }
+                    else if (appointment.Status == "Confirmed") { <form method="post" asp-page-handler="Status"><input type="hidden" name="hospitalId" value="@Model.HospitalId" /><input type="hidden" name="appointmentId" value="@appointment.Id" /><input type="hidden" name="status" value="Completed" /><button class="button button-small button-secondary" type="submit">Complete</button></form><form method="post" asp-page-handler="Status"><input type="hidden" name="hospitalId" value="@Model.HospitalId" /><input type="hidden" name="appointmentId" value="@appointment.Id" /><input type="hidden" name="status" value="Cancelled" /><button class="button button-small button-quiet" type="submit">Cancel</button></form> }
+                </div></td></tr>
+            }
+            </tbody></table></div>
+        }
+        else { <div class="empty-state">No appointments found for this hospital.</div> }
+    </section>
+}

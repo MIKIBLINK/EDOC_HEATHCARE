@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:vm="clr-namespace:EDOC.Mobile.ViewModels"
+             xmlns:models="clr-namespace:EDOC.Mobile.Models"
+             x:Class="EDOC.Mobile.DoctorDashboardPage"
+             x:DataType="vm:DoctorDashboardViewModel"
+             x:Name="DoctorRoot"
+             Title="Doctor">
+    <Grid Background="{StaticResource CanvasGlowBrush}">
+        <RefreshView Command="{Binding LoadCommand}" IsRefreshing="{Binding IsBusy}">
+            <ScrollView>
+                <VerticalStackLayout Padding="22,20,22,36" Spacing="20" MaximumWidthRequest="860" HorizontalOptions="Center">
+                    <Grid ColumnDefinitions="*,Auto" ColumnSpacing="12">
+                        <VerticalStackLayout Spacing="5">
+                            <Label Text="{Binding Title}" Style="{StaticResource PageTitle}" />
+                            <Label Text="{Binding Intro}" Style="{StaticResource BodySecondary}" />
+                        </VerticalStackLayout>
+                        <Button Grid.Column="1" Text="↻" Command="{Binding LoadCommand}" Style="{StaticResource IconButton}" VerticalOptions="Center" />
+                    </Grid>
+
+                    <Border Style="{StaticResource GlassCard}" Padding="20">
+                        <VerticalStackLayout Spacing="7">
+                            <Label Text="{Binding Profile.FullName}" FontSize="21" FontAttributes="Bold" TextColor="{StaticResource Blue}" />
+                            <Label Text="{Binding Profile.Specialty}" Style="{StaticResource BodySecondary}" />
+                            <Label Text="{Binding Profile.Qualifications}" Style="{StaticResource BodySecondary}" />
+                            <Label Text="{Binding Profile.Hospital}" Style="{StaticResource BodySecondary}" />
+                            <Border Style="{StaticResource Pill}" HorizontalOptions="Start" IsVisible="{Binding Profile.IsApproved}">
+                                <Label Text="Verified clinician" FontSize="12" FontAttributes="Bold" TextColor="{StaticResource Blue}" />
+                            </Border>
+                        </VerticalStackLayout>
+                    </Border>
+
+                    <Border Style="{StaticResource SubtleCard}" Padding="15" IsVisible="{Binding IsPendingVerification}">
+                        <Label Text="{Binding PendingVerificationText}" Style="{StaticResource BodySecondary}" />
+                    </Border>
+
+                    <Border Style="{StaticResource GlassCard}" Padding="18">
+                        <VerticalStackLayout Spacing="13">
+                            <Label Text="{Binding AvailabilityTitle}" Style="{StaticResource SectionHeader}" />
+                            <Label Text="{Binding ScheduleDateText}" Style="{StaticResource BodySecondary}" />
+                            <DatePicker Date="{Binding ScheduleDate}" MinimumDate="{Binding MinimumScheduleDate}" />
+                            <Grid ColumnDefinitions="*,*" ColumnSpacing="12">
+                                <VerticalStackLayout Spacing="4">
+                                    <Label Text="{Binding StartTimeText}" Style="{StaticResource BodySecondary}" />
+                                    <TimePicker Time="{Binding ScheduleStartTime}" />
+                                </VerticalStackLayout>
+                                <VerticalStackLayout Grid.Column="1" Spacing="4">
+                                    <Label Text="{Binding EndTimeText}" Style="{StaticResource BodySecondary}" />
+                                    <TimePicker Time="{Binding ScheduleEndTime}" />
+                                </VerticalStackLayout>
+                            </Grid>
+                            <Button Text="{Binding PublishScheduleText}" Command="{Binding PublishScheduleCommand}" IsEnabled="{Binding Profile.IsApproved}" Style="{StaticResource PrimaryButton}" />
+                            <ActivityIndicator IsRunning="{Binding IsSavingSchedule}" IsVisible="{Binding IsSavingSchedule}" Style="{StaticResource LoadingIndicator}" />
+                        </VerticalStackLayout>
+                    </Border>
+
+                    <Label Text="{Binding UpcomingAvailabilityText}" Style="{StaticResource SectionHeader}" />
+                    <CollectionView ItemsSource="{Binding UpcomingSchedules}" SelectionMode="None" HeightRequest="160">
+                        <CollectionView.EmptyView><Label Text="{Binding UpcomingAvailabilityText}" Style="{StaticResource BodySecondary}" /></CollectionView.EmptyView>
+                        <CollectionView.ItemsLayout><LinearItemsLayout Orientation="Horizontal" ItemSpacing="12" /></CollectionView.ItemsLayout>
+                        <CollectionView.ItemTemplate>
+                            <DataTemplate x:DataType="models:DoctorScheduleCard">
+                                <Border Style="{StaticResource SubtleCard}" Padding="15" WidthRequest="220" Margin="0,0,0,8">
+                                    <VerticalStackLayout Spacing="6">
+                                        <Label Text="{Binding StartsAt, StringFormat='{0:ddd, dd MMM}'}" FontAttributes="Bold" />
+                                        <Label Text="{Binding StartsAt, StringFormat='{0:HH:mm}'}" Style="{StaticResource BodySecondary}" />
+                                        <Label Text="{Binding Source={x:Reference DoctorRoot}, Path=BindingContext.AvailableText}" Style="{StaticResource BodySecondary}" IsVisible="{Binding IsAvailable}" />
+                                        <Label Text="{Binding Source={x:Reference DoctorRoot}, Path=BindingContext.ReservedText}" Style="{StaticResource BodySecondary}" IsVisible="{Binding IsReserved}" />
+                                    </VerticalStackLayout>
+                                </Border>
+                            </DataTemplate>
+                        </CollectionView.ItemTemplate>
+                    </CollectionView>
+
+                    <Grid ColumnDefinitions="*,Auto">
+                        <Label Text="{Binding AppointmentsTitle}" Style="{StaticResource SectionHeader}" VerticalOptions="Center" />
+                        <Label Grid.Column="1" Text="{Binding Appointments.Count, StringFormat='{0}'}" Style="{StaticResource BodySecondary}" VerticalOptions="Center" />
+                    </Grid>
+                    <CollectionView ItemsSource="{Binding Appointments}" SelectionMode="None" HeightRequest="420">
+                        <CollectionView.EmptyView><Label Text="{Binding EmptyAppointmentsText}" Style="{StaticResource BodySecondary}" Padding="12" /></CollectionView.EmptyView>
+                        <CollectionView.ItemTemplate>
+                            <DataTemplate x:DataType="models:AppointmentCard">
+                                <Border Style="{StaticResource GlassCard}" Padding="17" Margin="0,0,0,12">
+                                    <VerticalStackLayout Spacing="9">
+                                        <Grid ColumnDefinitions="*,Auto">
+                                            <Label Text="{Binding PatientName}" FontSize="17" FontAttributes="Bold" />
+                                            <Border Grid.Column="1" Style="{StaticResource Pill}"><Label Text="{Binding Status}" FontSize="12" TextColor="{StaticResource Blue}" /></Border>
+                                        </Grid>
+                                        <Label Text="{Binding StartsAt, StringFormat='{0:ddd, dd MMM yyyy · HH:mm}'}" Style="{StaticResource BodySecondary}" />
+                                        <Label Text="{Binding Reason}" Style="{StaticResource BodySecondary}" />
+                                        <FlexLayout Wrap="Wrap" Direction="Row" JustifyContent="End" IsVisible="{Binding CanConfirm}">
+                                            <Button Text="{Binding Source={x:Reference DoctorRoot}, Path=BindingContext.ConfirmText}" Command="{Binding Source={x:Reference DoctorRoot}, Path=BindingContext.ConfirmCommand}" CommandParameter="{Binding .}" Style="{StaticResource PrimaryButton}" Padding="13,9" Margin="0,0,8,0" />
+                                            <Button Text="{Binding Source={x:Reference DoctorRoot}, Path=BindingContext.DeclineText}" Command="{Binding Source={x:Reference DoctorRoot}, Path=BindingContext.DeclineCommand}" CommandParameter="{Binding .}" Style="{StaticResource SecondaryButton}" Padding="13,9" />
+                                        </FlexLayout>
+                                        <Button Text="{Binding Source={x:Reference DoctorRoot}, Path=BindingContext.CompleteText}" Command="{Binding Source={x:Reference DoctorRoot}, Path=BindingContext.CompleteCommand}" CommandParameter="{Binding .}" Style="{StaticResource QuietButton}" HorizontalOptions="End" IsVisible="{Binding CanComplete}" />
+                                        <Button Text="{Binding Source={x:Reference DoctorRoot}, Path=BindingContext.AddClinicalRecordText}" Command="{Binding Source={x:Reference DoctorRoot}, Path=BindingContext.AddClinicalRecordCommand}" CommandParameter="{Binding .}" Style="{StaticResource SecondaryButton}" HorizontalOptions="End" IsVisible="{Binding CanAddClinicalRecord}" />
+                                    </VerticalStackLayout>
+                                </Border>
+                            </DataTemplate>
+                        </CollectionView.ItemTemplate>
+                    </CollectionView>
+                    <Label Text="{Binding Message}" TextColor="{StaticResource Danger}" />
+                    <ActivityIndicator IsRunning="{Binding IsBusy}" IsVisible="{Binding IsBusy}" Style="{StaticResource LoadingIndicator}" />
+                </VerticalStackLayout>
+            </ScrollView>
+        </RefreshView>
+    </Grid>
+</ContentPage>

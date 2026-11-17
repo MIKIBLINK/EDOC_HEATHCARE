@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="EDOC.Mobile.WebPortalNoticePage"
+             Shell.NavBarIsVisible="False">
+    <Grid Background="{StaticResource CanvasGlowBrush}">
+        <VerticalStackLayout Padding="28" Spacing="16" MaximumWidthRequest="520" VerticalOptions="Center" HorizontalOptions="Center">
+            <Border WidthRequest="70" HeightRequest="70" BackgroundColor="White" Padding="4" StrokeThickness="0" StrokeShape="RoundRectangle 22" HorizontalOptions="Center">
+                <Image Source="edoc_logo.png" Aspect="AspectFit" />
+            </Border>
+            <Label Text="{Binding HeaderText}" Style="{StaticResource PageTitle}" HorizontalTextAlignment="Center" />
+            <Label Text="{Binding Description}" Style="{StaticResource BodySecondary}" HorizontalTextAlignment="Center" />
+            <Border Style="{StaticResource GlassCard}" Padding="18">
+                <VerticalStackLayout Spacing="8">
+                    <Label Text="{Binding PortalHint}" Style="{StaticResource BodySecondary}" HorizontalTextAlignment="Center" />
+                    <Entry Text="{Binding PortalAddress}" Placeholder="https://your-portal.example" Keyboard="Url" Style="{StaticResource CustomEntry}" />
+                </VerticalStackLayout>
+            </Border>
+            <Button Text="{Binding OpenPortalText}" Clicked="OpenPortal_Clicked" Style="{StaticResource PrimaryButton}" />
+            <Button Text="{Binding SignOutText}" Clicked="SignOut_Clicked" Style="{StaticResource QuietButton}" />
+        </VerticalStackLayout>
+    </Grid>
+</ContentPage>

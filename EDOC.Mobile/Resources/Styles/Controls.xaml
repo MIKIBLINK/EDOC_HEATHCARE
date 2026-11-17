@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<ResourceDictionary xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml">
+    <Shadow x:Key="CardShadow" Brush="#1A173D63" Offset="0,6" Radius="18" Opacity="0.14" />
+    <LinearGradientBrush x:Key="PrimaryButtonBrush" StartPoint="0,0" EndPoint="1,1">
+        <GradientStop Color="#1677D2" Offset="0.0" />
+        <GradientStop Color="#36B7C9" Offset="1.0" />
+    </LinearGradientBrush>
+    <Style x:Key="PrimaryButton" TargetType="Button">
+        <Setter Property="FontFamily" Value="{DynamicResource AppFontFamily}" />
+        <Setter Property="Background" Value="{StaticResource PrimaryButtonBrush}" />
+        <Setter Property="TextColor" Value="White" />
+        <Setter Property="FontSize" Value="16" />
+        <Setter Property="FontAttributes" Value="Bold" />
+        <Setter Property="CornerRadius" Value="18" />
+        <Setter Property="Padding" Value="22,15" />
+        <Setter Property="MinimumHeightRequest" Value="54" />
+        <Setter Property="Shadow" Value="{StaticResource CardShadow}" />
+    </Style>
+    <Style x:Key="SecondaryButton" TargetType="Button">
+        <Setter Property="FontFamily" Value="{DynamicResource AppFontFamily}" />
+        <Setter Property="BackgroundColor" Value="{AppThemeBinding Light={StaticResource SurfaceLight}, Dark={StaticResource SurfaceDark}}" />
+        <Setter Property="TextColor" Value="{StaticResource Blue}" />
+        <Setter Property="FontSize" Value="15" />
+        <Setter Property="FontAttributes" Value="Bold" />
+        <Setter Property="CornerRadius" Value="18" />
+        <Setter Property="BorderColor" Value="{AppThemeBinding Light={StaticResource BorderLight}, Dark={StaticResource BorderDark}}" />
+        <Setter Property="BorderWidth" Value="1" />
+        <Setter Property="Padding" Value="16,12" />
+        <Setter Property="MinimumHeightRequest" Value="48" />
+    </Style>
+    <Style x:Key="QuietButton" TargetType="Button">
+        <Setter Property="FontFamily" Value="{DynamicResource AppFontFamily}" />
+        <Setter Property="BackgroundColor" Value="Transparent" />
+        <Setter Property="TextColor" Value="{StaticResource Blue}" />
+        <Setter Property="FontSize" Value="15" />
+        <Setter Property="FontAttributes" Value="Bold" />
+        <Setter Property="CornerRadius" Value="14" />
+        <Setter Property="Padding" Value="14,10" />
+        <Setter Property="MinimumHeightRequest" Value="44" />
+    </Style>
+    <Style x:Key="IconButton" TargetType="Button" BasedOn="{StaticResource QuietButton}">
+        <Setter Property="FontSize" Value="22" />
+        <Setter Property="Padding" Value="8" />
+        <Setter Property="MinimumWidthRequest" Value="44" />
+    </Style>
+    <Style x:Key="FormEntry" TargetType="Entry">
+        <Setter Property="FontFamily" Value="{DynamicResource AppFontFamily}" />
+        <Setter Property="BackgroundColor" Value="Transparent" />
+        <Setter Property="TextColor" Value="{AppThemeBinding Light={StaticResource InkLight}, Dark={StaticResource InkDark}}" />
+        <Setter Property="PlaceholderColor" Value="{AppThemeBinding Light={StaticResource MutedLight}, Dark={StaticResource MutedDark}}" />
+        <Setter Property="FontSize" Value="16" />
+        <Setter Property="HeightRequest" Value="52" />
+        <Setter Property="Margin" Value="0" />
+    </Style>
+    <Style x:Key="SearchBarStyle" TargetType="SearchBar">
+        <Setter Property="FontFamily" Value="{DynamicResource AppFontFamily}" />
+        <Setter Property="BackgroundColor" Value="Transparent" />
+        <Setter Property="TextColor" Value="{AppThemeBinding Light={StaticResource InkLight}, Dark={StaticResource InkDark}}" />
+        <Setter Property="PlaceholderColor" Value="{AppThemeBinding Light={StaticResource MutedLight}, Dark={StaticResource MutedDark}}" />
+        <Setter Property="CancelButtonColor" Value="{StaticResource Blue}" />
+    </Style>
+    <Style x:Key="Card" TargetType="Border">
+        <Setter Property="BackgroundColor" Value="{AppThemeBinding Light={StaticResource SurfaceLight}, Dark={StaticResource SurfaceDark}}" />
+        <Setter Property="Stroke" Value="{AppThemeBinding Light={StaticResource BorderLight}, Dark={StaticResource BorderDark}}" />
+        <Setter Property="StrokeThickness" Value="1" />
+        <Setter Property="StrokeShape" Value="RoundRectangle 24" />
+        <Setter Property="Shadow" Value="{StaticResource CardShadow}" />
+    </Style>
+    <Style x:Key="GlassCard" TargetType="Border" BasedOn="{StaticResource Card}">
+        <Setter Property="BackgroundColor" Value="{AppThemeBinding Light=#F2FFFFFF, Dark=#E51B2A3A}" />
+        <Setter Property="Stroke" Value="{AppThemeBinding Light=#B3FFFFFF, Dark=#334B6880}" />
+    </Style>
+    <Style x:Key="SubtleCard" TargetType="Border" BasedOn="{StaticResource Card}">
+        <Setter Property="BackgroundColor" Value="{AppThemeBinding Light={StaticResource SurfaceSecondaryLight}, Dark={StaticResource SurfaceSecondaryDark}}" />
+    </Style>
+    <Style x:Key="Pill" TargetType="Border">
+        <Setter Property="BackgroundColor" Value="{StaticResource Mint}" />
+        <Setter Property="StrokeThickness" Value="0" />
+        <Setter Property="StrokeShape" Value="RoundRectangle 100" />
+        <Setter Property="Padding" Value="10,6" />
+    </Style>
+    <Style x:Key="SectionHeader" TargetType="Label" BasedOn="{StaticResource SectionTitle}">
+        <Setter Property="FontSize" Value="19" />
+    </Style>
+    <Style x:Key="CustomEntry" TargetType="Entry" BasedOn="{StaticResource FormEntry}" />
+    <Style x:Key="GlassInput" TargetType="Border" BasedOn="{StaticResource Card}">
+        <Setter Property="BackgroundColor" Value="{AppThemeBinding Light=#F7FAFD, Dark=#192C40}" />
+        <Setter Property="StrokeThickness" Value="0" />
+        <Setter Property="Shadow" Value="{x:Null}" />
+    </Style>
+    <Style x:Key="LoadingIndicator" TargetType="ActivityIndicator">
+        <Setter Property="Color" Value="{StaticResource Blue}" />
+        <Setter Property="HorizontalOptions" Value="Center" />
+    </Style>
+</ResourceDictionary>

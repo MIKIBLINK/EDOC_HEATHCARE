@@ -1,0 +1,140 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:vm="clr-namespace:EDOC.Mobile.ViewModels"
+             xmlns:models="clr-namespace:EDOC.Mobile.Models"
+             x:Class="EDOC.Mobile.AdminDirectoryPage"
+             x:DataType="vm:AdminDirectoryViewModel"
+             x:Name="DirectoryRoot">
+    <Grid Background="{StaticResource CanvasGlowBrush}">
+        <RefreshView Command="{Binding LoadCommand}" IsRefreshing="{Binding IsBusy}">
+            <ScrollView>
+                <VerticalStackLayout Padding="22,20,22,36" Spacing="18" MaximumWidthRequest="920" HorizontalOptions="Center">
+                    <VerticalStackLayout Spacing="5">
+                        <Label Text="{Binding Title}" Style="{StaticResource PageTitle}" />
+                        <Label Text="{Binding Intro}" Style="{StaticResource BodySecondary}" />
+                    </VerticalStackLayout>
+
+                    <Label Text="{Binding HospitalSection}" Style="{StaticResource SectionHeader}" />
+                    <Grid ColumnDefinitions="*,Auto" ColumnSpacing="8">
+                        <Border Style="{StaticResource GlassInput}" Padding="10,0">
+                            <SearchBar Placeholder="{Binding SearchHint}" Text="{Binding SearchText}" SearchCommand="{Binding SearchCommand}" Style="{StaticResource SearchBarStyle}" />
+                        </Border>
+                        <Button Grid.Column="1" Text="{Binding NewHospitalText}" Command="{Binding NewHospitalCommand}" Style="{StaticResource SecondaryButton}" Padding="12,8" />
+                    </Grid>
+
+                    <CollectionView ItemsSource="{Binding Hospitals}" SelectionMode="None" HeightRequest="285">
+                        <CollectionView.EmptyView><Label Text="{Binding NoHospitalsText}" Style="{StaticResource BodySecondary}" Padding="12" /></CollectionView.EmptyView>
+                        <CollectionView.ItemTemplate>
+                            <DataTemplate x:DataType="models:AdminHospitalDirectoryCard">
+                                <Border Style="{StaticResource SubtleCard}" Padding="14" Margin="0,0,0,9">
+                                    <Grid ColumnDefinitions="*,Auto" RowDefinitions="Auto,Auto,Auto,Auto" ColumnSpacing="8">
+                                        <Label Text="{Binding Name}" FontAttributes="Bold" FontSize="16" />
+                                        <Label Grid.Row="1" Text="{Binding NameKm}" Style="{StaticResource BodySecondary}" />
+                                        <Label Grid.Row="2" Text="{Binding Province}" Style="{StaticResource BodySecondary}" />
+                                        <Label Grid.Row="3" Text="{Binding NssfStatusLabel}" Style="{StaticResource Eyebrow}" />
+                                        <Button Grid.Column="1" Grid.RowSpan="4" Text="›"
+                                                Command="{Binding Source={x:Reference DirectoryRoot}, Path=BindingContext.SelectHospitalCommand}"
+                                                CommandParameter="{Binding .}" Style="{StaticResource IconButton}" VerticalOptions="Center" />
+                                    </Grid>
+                                </Border>
+                            </DataTemplate>
+                        </CollectionView.ItemTemplate>
+                    </CollectionView>
+
+                    <Border Style="{StaticResource GlassCard}" Padding="18">
+                        <VerticalStackLayout Spacing="12">
+                            <Label Text="{Binding HospitalNameLabel}" Style="{StaticResource Eyebrow}" />
+                            <Entry Text="{Binding HospitalName}" Placeholder="{Binding HospitalNameLabel}" />
+                            <Entry Text="{Binding HospitalNameKm}" Placeholder="{Binding KhmerNameLabel}" />
+                            <Grid ColumnDefinitions="*,*" ColumnSpacing="10">
+                                <Picker Title="{Binding ProvinceLabel}" ItemsSource="{Binding Provinces}" SelectedItem="{Binding SelectedProvince}" ItemDisplayBinding="{Binding Name}" />
+                                <Picker Grid.Column="1" Title="{Binding TypeLabel}" ItemsSource="{Binding FacilityTypes}" SelectedItem="{Binding SelectedFacilityType}" ItemDisplayBinding="{Binding Label}" />
+                            </Grid>
+                            <Grid ColumnDefinitions="*,*" ColumnSpacing="10">
+                                <Picker Title="{Binding OwnershipLabel}" ItemsSource="{Binding OwnershipTypes}" SelectedItem="{Binding SelectedOwnership}" ItemDisplayBinding="{Binding Label}" />
+                                <Picker Grid.Column="1" Title="{Binding NssfLabel}" ItemsSource="{Binding NssfStatuses}" SelectedItem="{Binding SelectedNssfStatus}" ItemDisplayBinding="{Binding Label}" />
+                            </Grid>
+                            <Picker Title="{Binding OperationLabel}" ItemsSource="{Binding OperationalStatuses}" SelectedItem="{Binding SelectedOperationalStatus}" ItemDisplayBinding="{Binding Label}" />
+                            <Entry Text="{Binding Address}" Placeholder="{Binding AddressLabel}" />
+                            <Grid ColumnDefinitions="*,*" ColumnSpacing="10">
+                                <Entry Text="{Binding Phone}" Placeholder="{Binding PhoneLabel}" Keyboard="Telephone" />
+                                <Entry Grid.Column="1" Text="{Binding Email}" Placeholder="{Binding EmailLabel}" Keyboard="Email" />
+                            </Grid>
+                            <Grid ColumnDefinitions="*,*" ColumnSpacing="10">
+                                <Entry Text="{Binding Website}" Placeholder="{Binding WebsiteLabel}" Keyboard="Url" />
+                                <Entry Grid.Column="1" Text="{Binding OpeningHours}" Placeholder="{Binding HoursLabel}" />
+                            </Grid>
+                            <Entry Text="{Binding SourceUrl}" Placeholder="{Binding SourceLabel}" Keyboard="Url" />
+                            <Grid ColumnDefinitions="Auto,*" ColumnSpacing="10">
+                                <CheckBox IsChecked="{Binding IsEvidenceVerified}" VerticalOptions="Center" />
+                                <Label Grid.Column="1" Text="{Binding VerifiedLabel}" Style="{StaticResource BodySecondary}" VerticalOptions="Center" />
+                            </Grid>
+                            <Label Text="{Binding VerifiedDateLabel}" Style="{StaticResource Eyebrow}" />
+                            <DatePicker Date="{Binding VerifiedDate}" />
+                            <Picker Title="{Binding SpecialtyLabel}" ItemsSource="{Binding Specialties}" SelectedItem="{Binding SelectedHospitalSpecialty}" ItemDisplayBinding="{Binding Name}" />
+                            <Grid ColumnDefinitions="Auto,*" ColumnSpacing="10">
+                                <CheckBox IsChecked="{Binding IsDirectoryEntryActive}" VerticalOptions="Center" />
+                                <Label Grid.Column="1" Text="{Binding ActiveDirectoryLabel}" Style="{StaticResource BodySecondary}" VerticalOptions="Center" />
+                            </Grid>
+                            <Grid ColumnDefinitions="*,*" ColumnSpacing="10">
+                                <Button Text="{Binding SaveHospitalText}" Command="{Binding SaveHospitalCommand}" Style="{StaticResource PrimaryButton}" />
+                                <Button Grid.Column="1" Text="{Binding NewHospitalText}" Command="{Binding NewHospitalCommand}" Style="{StaticResource SecondaryButton}" />
+                            </Grid>
+                        </VerticalStackLayout>
+                    </Border>
+
+                    <Label Text="{Binding SpecialtySection}" Style="{StaticResource SectionHeader}" />
+                    <Border Style="{StaticResource GlassCard}" Padding="18">
+                        <VerticalStackLayout Spacing="10">
+                            <Entry Text="{Binding SpecialtyName}" Placeholder="{Binding SpecialtyNameLabel}" />
+                            <Entry Text="{Binding SpecialtyNameKm}" Placeholder="{Binding SpecialtyNameKmLabel}" />
+                            <Grid ColumnDefinitions="*,*" ColumnSpacing="10">
+                                <Button Text="{Binding SaveSpecialtyText}" Command="{Binding SaveSpecialtyCommand}" Style="{StaticResource PrimaryButton}" />
+                                <Button Grid.Column="1" Text="{Binding NewSpecialtyText}" Command="{Binding NewSpecialtyCommand}" Style="{StaticResource SecondaryButton}" />
+                            </Grid>
+                        </VerticalStackLayout>
+                    </Border>
+                    <CollectionView ItemsSource="{Binding Specialties}" SelectionMode="None" HeightRequest="260">
+                        <CollectionView.EmptyView><Label Text="{Binding NoSpecialtiesText}" Style="{StaticResource BodySecondary}" Padding="12" /></CollectionView.EmptyView>
+                        <CollectionView.ItemTemplate>
+                            <DataTemplate x:DataType="models:AdminSpecialtyDirectoryCard">
+                                <Border Style="{StaticResource SubtleCard}" Padding="12" Margin="0,0,0,8">
+                                    <Grid ColumnDefinitions="*,Auto">
+                                        <VerticalStackLayout Spacing="2">
+                                            <Label Text="{Binding Name}" FontAttributes="Bold" />
+                                            <Label Text="{Binding NameKm}" Style="{StaticResource BodySecondary}" />
+                                        </VerticalStackLayout>
+                                        <Button Grid.Column="1" Text="›"
+                                                Command="{Binding Source={x:Reference DirectoryRoot}, Path=BindingContext.SelectSpecialtyCommand}"
+                                                CommandParameter="{Binding .}" Style="{StaticResource IconButton}" />
+                                    </Grid>
+                                </Border>
+                            </DataTemplate>
+                        </CollectionView.ItemTemplate>
+                    </CollectionView>
+
+                    <Label Text="{Binding AuditSection}" Style="{StaticResource SectionHeader}" />
+                    <CollectionView ItemsSource="{Binding AuditEntries}" SelectionMode="None" HeightRequest="300">
+                        <CollectionView.EmptyView><Label Text="{Binding NoAuditText}" Style="{StaticResource BodySecondary}" Padding="12" /></CollectionView.EmptyView>
+                        <CollectionView.ItemTemplate>
+                            <DataTemplate x:DataType="models:AdminDirectoryAuditCard">
+                                <Border Style="{StaticResource SubtleCard}" Padding="12" Margin="0,0,0,8">
+                                    <VerticalStackLayout Spacing="4">
+                                        <Label Text="{Binding Action}" FontAttributes="Bold" />
+                                        <Label Text="{Binding Summary}" Style="{StaticResource BodySecondary}" />
+                                        <Label Text="{Binding ActorName}" Style="{StaticResource BodySecondary}" />
+                                        <Label Text="{Binding CreatedAt, StringFormat='{0:g}'}" Style="{StaticResource Eyebrow}" />
+                                    </VerticalStackLayout>
+                                </Border>
+                            </DataTemplate>
+                        </CollectionView.ItemTemplate>
+                    </CollectionView>
+
+                    <Label Text="{Binding Message}" TextColor="{StaticResource Danger}" />
+                    <ActivityIndicator IsRunning="{Binding IsBusy}" IsVisible="{Binding IsBusy}" Style="{StaticResource LoadingIndicator}" />
+                </VerticalStackLayout>
+            </ScrollView>
+        </RefreshView>
+    </Grid>
+</ContentPage>

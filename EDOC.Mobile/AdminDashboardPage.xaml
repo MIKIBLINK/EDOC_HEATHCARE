@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:vm="clr-namespace:EDOC.Mobile.ViewModels"
+             xmlns:models="clr-namespace:EDOC.Mobile.Models"
+             x:Class="EDOC.Mobile.AdminDashboardPage"
+             x:DataType="vm:AdminDashboardViewModel"
+             x:Name="AdminRoot"
+             Title="Administration">
+    <Grid Background="{StaticResource CanvasGlowBrush}">
+        <RefreshView Command="{Binding LoadCommand}" IsRefreshing="{Binding IsBusy}">
+            <ScrollView>
+                <VerticalStackLayout Padding="22,20,22,36" Spacing="20" MaximumWidthRequest="900" HorizontalOptions="Center">
+                    <Grid ColumnDefinitions="*,Auto" ColumnSpacing="12">
+                        <VerticalStackLayout Spacing="5">
+                            <Label Text="{Binding Title}" Style="{StaticResource PageTitle}" />
+                            <Label Text="{Binding Intro}" Style="{StaticResource BodySecondary}" />
+                        </VerticalStackLayout>
+                        <Button Grid.Column="1" Text="↻" Command="{Binding LoadCommand}" Style="{StaticResource IconButton}" VerticalOptions="Center" />
+                    </Grid>
+
+                    <Label Text="{Binding OverviewTitle}" Style="{StaticResource SectionHeader}" />
+                    <Grid ColumnDefinitions="*,*" RowDefinitions="Auto,Auto,Auto,Auto" ColumnSpacing="12" RowSpacing="12">
+                        <Border Style="{StaticResource GlassCard}" Padding="15"><VerticalStackLayout Spacing="4"><Label Text="{Binding PatientsText}" Style="{StaticResource BodySecondary}"/><Label Text="{Binding Metrics.Patients}" FontSize="25" FontAttributes="Bold" TextColor="{StaticResource Blue}"/></VerticalStackLayout></Border>
+                        <Border Grid.Column="1" Style="{StaticResource GlassCard}" Padding="15"><VerticalStackLayout Spacing="4"><Label Text="{Binding DoctorsText}" Style="{StaticResource BodySecondary}"/><Label Text="{Binding Metrics.Doctors}" FontSize="25" FontAttributes="Bold" TextColor="{StaticResource Blue}"/></VerticalStackLayout></Border>
+                        <Border Grid.Row="1" Style="{StaticResource GlassCard}" Padding="15"><VerticalStackLayout Spacing="4"><Label Text="{Binding HospitalsText}" Style="{StaticResource BodySecondary}"/><Label Text="{Binding Metrics.Hospitals}" FontSize="25" FontAttributes="Bold" TextColor="{StaticResource Blue}"/></VerticalStackLayout></Border>
+                        <Border Grid.Row="1" Grid.Column="1" Style="{StaticResource GlassCard}" Padding="15"><VerticalStackLayout Spacing="4"><Label Text="{Binding AppointmentsText}" Style="{StaticResource BodySecondary}"/><Label Text="{Binding Metrics.Appointments}" FontSize="25" FontAttributes="Bold" TextColor="{StaticResource Blue}"/></VerticalStackLayout></Border>
+                        <Border Grid.Row="2" Style="{StaticResource GlassCard}" Padding="15"><VerticalStackLayout Spacing="4"><Label Text="{Binding PendingAppointmentsText}" Style="{StaticResource BodySecondary}"/><Label Text="{Binding Metrics.PendingAppointments}" FontSize="25" FontAttributes="Bold" TextColor="{StaticResource Warning}"/></VerticalStackLayout></Border>
+                        <Border Grid.Row="2" Grid.Column="1" Style="{StaticResource GlassCard}" Padding="15"><VerticalStackLayout Spacing="4"><Label Text="{Binding CompletedAppointmentsText}" Style="{StaticResource BodySecondary}"/><Label Text="{Binding Metrics.CompletedAppointments}" FontSize="25" FontAttributes="Bold" TextColor="{StaticResource Success}"/></VerticalStackLayout></Border>
+                        <Border Grid.Row="3" Grid.ColumnSpan="2" Style="{StaticResource GlassCard}" Padding="15"><Grid ColumnDefinitions="*,Auto"><Label Text="{Binding UpcomingAppointmentsText}" Style="{StaticResource BodySecondary}" VerticalOptions="Center"/><Label Grid.Column="1" Text="{Binding Metrics.UpcomingAppointments}" FontSize="23" FontAttributes="Bold" TextColor="{StaticResource Blue}"/></Grid></Border>
+                    </Grid>
+
+                    <Grid ColumnDefinitions="*,Auto" ColumnSpacing="8">
+                        <Label Text="{Binding DoctorReviewTitle}" Style="{StaticResource SectionHeader}" VerticalOptions="Center" />
+                        <Label Grid.Column="1" Text="{Binding PendingDoctors.Count}" Style="{StaticResource BodySecondary}" VerticalOptions="Center" />
+                    </Grid>
+                    <CollectionView ItemsSource="{Binding PendingDoctors}" SelectionMode="None" HeightRequest="360">
+                        <CollectionView.EmptyView><Label Text="{Binding NoPendingDoctorsText}" Style="{StaticResource BodySecondary}" Padding="12" /></CollectionView.EmptyView>
+                        <CollectionView.ItemTemplate>
+                            <DataTemplate x:DataType="models:AdminDoctorCard">
+                                <Border Style="{StaticResource GlassCard}" Padding="17" Margin="0,0,0,12">
+                                    <VerticalStackLayout Spacing="8">
+                                        <Label Text="{Binding FullName}" FontSize="17" FontAttributes="Bold" />
+                                        <Label Text="{Binding Specialty}" Style="{StaticResource BodySecondary}" />
+                                        <Label Text="{Binding Email}" Style="{StaticResource BodySecondary}" />
+                                        <Label Text="{Binding Qualifications}" Style="{StaticResource BodySecondary}" />
+                                        <Grid ColumnDefinitions="*,*" ColumnSpacing="10">
+                                            <Button Text="{Binding Source={x:Reference AdminRoot}, Path=BindingContext.ApproveText}" Command="{Binding Source={x:Reference AdminRoot}, Path=BindingContext.ApproveDoctorCommand}" CommandParameter="{Binding .}" Style="{StaticResource PrimaryButton}" Padding="12,9" />
+                                            <Button Grid.Column="1" Text="{Binding Source={x:Reference AdminRoot}, Path=BindingContext.DeclineText}" Command="{Binding Source={x:Reference AdminRoot}, Path=BindingContext.DeclineDoctorCommand}" CommandParameter="{Binding .}" Style="{StaticResource SecondaryButton}" Padding="12,9" />
+                                        </Grid>
+                                    </VerticalStackLayout>
+                                </Border>
+                            </DataTemplate>
+                        </CollectionView.ItemTemplate>
+                    </CollectionView>
+
+                    <Label Text="{Binding UserDirectoryTitle}" Style="{StaticResource SectionHeader}" />
+                    <Grid ColumnDefinitions="*,Auto" ColumnSpacing="8">
+                        <Border Style="{StaticResource GlassInput}" Padding="10,0">
+                            <SearchBar Placeholder="{Binding SearchHint}" Text="{Binding SearchText}" SearchCommand="{Binding SearchCommand}" Style="{StaticResource SearchBarStyle}" />
+                        </Border>
+                        <Button Grid.Column="1" Text="{Binding RefreshText}" Command="{Binding SearchCommand}" Style="{StaticResource SecondaryButton}" Padding="12,8" />
+                    </Grid>
+                    <CollectionView ItemsSource="{Binding Users}" SelectionMode="None" HeightRequest="420">
+                        <CollectionView.EmptyView><Label Text="{Binding NoUsersText}" Style="{StaticResource BodySecondary}" Padding="12" /></CollectionView.EmptyView>
+                        <CollectionView.ItemTemplate>
+                            <DataTemplate x:DataType="models:AdminUserCard">
+                                <Border Style="{StaticResource SubtleCard}" Padding="16" Margin="0,0,0,10">
+                                    <Grid ColumnDefinitions="*,Auto" RowDefinitions="Auto,Auto,Auto" ColumnSpacing="8" RowSpacing="5">
+                                        <Label Text="{Binding FullName}" FontAttributes="Bold" FontSize="16" />
+                                        <Label Grid.Row="1" Text="{Binding Email}" Style="{StaticResource BodySecondary}" />
+                                        <Label Grid.Row="2" Text="{Binding RoleSummary}" Style="{StaticResource BodySecondary}" />
+                                        <Button Grid.Column="1" Grid.RowSpan="3" Text="{Binding Source={x:Reference AdminRoot}, Path=BindingContext.ActivateText}" Command="{Binding Source={x:Reference AdminRoot}, Path=BindingContext.ActivateUserCommand}" CommandParameter="{Binding .}" IsVisible="{Binding CanActivate}" Style="{StaticResource SecondaryButton}" Padding="10,8" VerticalOptions="Center" />
+                                        <Button Grid.Column="1" Grid.RowSpan="3" Text="{Binding Source={x:Reference AdminRoot}, Path=BindingContext.DeactivateText}" Command="{Binding Source={x:Reference AdminRoot}, Path=BindingContext.DeactivateUserCommand}" CommandParameter="{Binding .}" IsVisible="{Binding CanDeactivate}" Style="{StaticResource QuietButton}" VerticalOptions="Center" />
+                                    </Grid>
+                                </Border>
+                            </DataTemplate>
+                        </CollectionView.ItemTemplate>
+                    </CollectionView>
+                    <Label Text="{Binding Message}" TextColor="{StaticResource Danger}" />
+                    <ActivityIndicator IsRunning="{Binding IsBusy}" IsVisible="{Binding IsBusy}" Style="{StaticResource LoadingIndicator}" />
+                </VerticalStackLayout>
+            </ScrollView>
+        </RefreshView>
+    </Grid>
+</ContentPage>

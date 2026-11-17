@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:vm="clr-namespace:EDOC.Mobile.ViewModels"
+             xmlns:models="clr-namespace:EDOC.Mobile.Models"
+             xmlns:controls="clr-namespace:EDOC.Mobile.Controls"
+             x:Class="EDOC.Mobile.HospitalsPage"
+             x:DataType="vm:HospitalsViewModel"
+             x:Name="HospitalsRoot">
+    <Grid Background="{StaticResource CanvasGlowBrush}" RowDefinitions="Auto,Auto,Auto,*">
+        <VerticalStackLayout Grid.Row="0" Padding="22,20,22,4" Spacing="4" MaximumWidthRequest="760" HorizontalOptions="Center">
+            <Label Text="{Binding Title}" Style="{StaticResource PageTitle}" />
+            <Label Text="{Binding Intro}" Style="{StaticResource BodySecondary}" />
+        </VerticalStackLayout>
+        <Border Grid.Row="1" Style="{StaticResource GlassInput}" Padding="8,0" Margin="22,12,22,4" MaximumWidthRequest="716" HorizontalOptions="Center">
+            <SearchBar Text="{Binding SearchText}" Placeholder="{Binding SearchHint}" SearchCommand="{Binding SearchCommand}" Style="{StaticResource SearchBarStyle}" />
+        </Border>
+        <FlexLayout Grid.Row="2" Direction="Row" Wrap="Wrap" JustifyContent="SpaceBetween" Margin="22,0,22,4" MaximumWidthRequest="716" HorizontalOptions="Center">
+            <Picker Title="{Binding ProvinceFilterLabel}" ItemsSource="{Binding Provinces}" SelectedItem="{Binding SelectedProvince}" ItemDisplayBinding="{Binding Name}" WidthRequest="210" />
+            <Picker Title="{Binding NssfFilterLabel}" ItemsSource="{Binding NssfStatuses}" SelectedItem="{Binding SelectedNssfStatus}" ItemDisplayBinding="{Binding Label}" WidthRequest="210" />
+            <Picker Title="{Binding TypeFilterLabel}" ItemsSource="{Binding FacilityTypes}" SelectedItem="{Binding SelectedFacilityType}" ItemDisplayBinding="{Binding Label}" WidthRequest="210" />
+            <Picker Title="{Binding OwnershipFilterLabel}" ItemsSource="{Binding OwnershipTypes}" SelectedItem="{Binding SelectedOwnership}" ItemDisplayBinding="{Binding Label}" WidthRequest="210" />
+        </FlexLayout>
+        <RefreshView Grid.Row="3" Command="{Binding LoadCommand}" IsRefreshing="{Binding IsBusy}">
+            <CollectionView ItemsSource="{Binding FilteredHospitals}" SelectionMode="None" Margin="22,12" MaximumWidthRequest="716" HorizontalOptions="Center">
+                <CollectionView.EmptyView>
+                    <controls:EmptyStateView Message="{Binding StatusMessage}" />
+                </CollectionView.EmptyView>
+                <CollectionView.ItemTemplate>
+                    <DataTemplate x:DataType="models:HospitalCard">
+                        <Border Style="{StaticResource GlassCard}" Margin="0,0,0,14" Padding="17">
+                            <Grid ColumnDefinitions="44,*,Auto" ColumnSpacing="12">
+                                <Border WidthRequest="42" HeightRequest="42" BackgroundColor="{StaticResource Mint}" StrokeThickness="0" StrokeShape="RoundRectangle 15" VerticalOptions="Start">
+                                    <Image Source="hospital.svg" WidthRequest="24" HeightRequest="24" HorizontalOptions="Center" VerticalOptions="Center" />
+                                </Border>
+                                <VerticalStackLayout Grid.Column="1" Spacing="4" VerticalOptions="Center">
+                                    <Label Text="{Binding Name}" FontSize="17" FontAttributes="Bold" />
+                                    <Label Text="{Binding Province}" Style="{StaticResource BodySecondary}" />
+                                    <Label Text="{Binding Address}" Style="{StaticResource BodySecondary}" />
+                                    <Label Text="{Binding Phone}" Style="{StaticResource BodySecondary}" />
+                                    <Label Text="{Binding NssfStatusLabel}" FontSize="11" TextColor="{StaticResource Secondary}" />
+                                </VerticalStackLayout>
+                                <Button Grid.Column="2" Text="›" Command="{Binding Source={x:Reference HospitalsRoot}, Path=BindingContext.OpenDetailsCommand}"
+                                        CommandParameter="{Binding .}" Style="{StaticResource IconButton}" VerticalOptions="Center"
+                                        SemanticProperties.Description="{Binding Name}" />
+                            </Grid>
+                        </Border>
+                    </DataTemplate>
+                </CollectionView.ItemTemplate>
+            </CollectionView>
+        </RefreshView>
+    </Grid>
+</ContentPage>

@@ -1,0 +1,21 @@
+@page "/admin/reports"
+@model EDOC.Web.Pages.Admin.ReportsModel
+@{
+    ViewData["Title"] = "Platform reports";
+}
+<div class="page-heading">
+    <div><div class="eyebrow">ADMINISTRATION · ANALYTICS</div><h1>Platform reports</h1><p class="muted">Download CSV summaries from current E-DOC records.</p></div>
+    <a class="button button-secondary" asp-page="/Admin/Index">Back to overview</a>
+</div>
+@if (!string.IsNullOrWhiteSpace(Model.Error)) { <div class="alert alert-error" role="alert">@Model.Error</div> }
+<section class="metric-grid">
+    @foreach (var report in new[] { (Key: "hospitals", Title: "Hospital directory", Description: "Facility type, province, NSSF status and account state."), (Key: "doctors", Title: "Doctor directory", Description: "Specialty, facility, qualifications and verification state."), (Key: "patients", Title: "Patient accounts", Description: "Patient identity and account status only; no clinical records." ) })
+    {
+        <article class="glass-panel directory-callout"><div class="eyebrow">CSV EXPORT</div><h2>@report.Title</h2><p class="muted">@report.Description</p><a class="button button-primary" asp-page-handler="Download" asp-route-report="@report.Key">Download CSV</a></article>
+    }
+</section>
+<section class="glass-panel table-panel">
+    <div class="section-heading"><div><div class="eyebrow">SCHEDULED CARE</div><h2>Appointment report</h2><p class="muted">Select an optional UTC date range. The report is limited to 10,000 appointments.</p></div></div>
+    <form method="get" class="inline-form"><input type="hidden" name="handler" value="Download" /><input type="hidden" name="report" value="appointments" /><label>From <input type="date" name="from" value="@(Model.From?.ToString("yyyy-MM-dd"))" /></label><label>To <input type="date" name="to" value="@(Model.To?.ToString("yyyy-MM-dd"))" /></label><button class="button button-primary" type="submit">Download appointment CSV</button></form>
+</section>
+<p class="muted">CSV exports open in spreadsheet applications. PDF and native Excel exports are not enabled yet.</p>

@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:vm="clr-namespace:EDOC.Mobile.ViewModels"
+             xmlns:models="clr-namespace:EDOC.Mobile.Models"
+             x:Class="EDOC.Mobile.HealthPage"
+             x:DataType="vm:HealthViewModel"
+             x:Name="HealthRoot"
+             Title="{Binding Title}">
+    <RefreshView Command="{Binding LoadCommand}" IsRefreshing="{Binding IsBusy}">
+        <ScrollView Background="{StaticResource CanvasGlowBrush}">
+            <VerticalStackLayout Padding="{StaticResource PageInset}" Spacing="16" MaximumWidthRequest="760" HorizontalOptions="Center">
+                <Label Text="{Binding Title}" Style="{StaticResource PageTitle}" />
+                <Label Text="{Binding Intro}" Style="{StaticResource BodySecondary}" />
+                <Border Style="{StaticResource GlassCard}" Padding="18">
+                    <VerticalStackLayout Spacing="10">
+                        <Label Text="{Binding MeasurementTitle}" Style="{StaticResource SectionTitle}" />
+                        <Picker Title="{Binding MetricLabel}" ItemsSource="{Binding MetricTypes}" SelectedIndex="{Binding SelectedMetricIndex}" />
+                        <Grid ColumnDefinitions="*,*" ColumnSpacing="10">
+                            <Entry Placeholder="{Binding ValueLabel}" Text="{Binding Value}" Keyboard="Numeric" />
+                            <Entry Grid.Column="1" Placeholder="{Binding SecondaryValueLabel}" Text="{Binding SecondaryValue}" Keyboard="Numeric" IsVisible="{Binding NeedsSecondaryValue}" />
+                        </Grid>
+                        <Entry Placeholder="{Binding UnitLabel}" Text="{Binding Unit}" />
+                        <Editor Placeholder="{Binding NotesLabel}" Text="{Binding MeasurementNotes}" AutoSize="TextChanges" />
+                        <Button Text="{Binding SaveMeasurementText}" Command="{Binding SaveMeasurementCommand}" Style="{StaticResource PrimaryButton}" />
+                    </VerticalStackLayout>
+                </Border>
+                <CollectionView ItemsSource="{Binding Measurements}" SelectionMode="None" HeightRequest="220">
+                    <CollectionView.EmptyView><Label Text="{Binding HistoryEmpty}" Style="{StaticResource BodySecondary}" Padding="10" /></CollectionView.EmptyView>
+                    <CollectionView.ItemTemplate><DataTemplate x:DataType="models:HealthMeasurementCard">
+                        <Border Style="{StaticResource SubtleCard}" Padding="13" Margin="0,0,0,8">
+                            <Grid ColumnDefinitions="*,Auto" RowDefinitions="Auto,Auto">
+                                <Label Text="{Binding MetricLabel}" FontAttributes="Bold" />
+                                <Label Grid.Column="1" Text="{Binding DisplayValue}" TextColor="{StaticResource Blue}" FontAttributes="Bold" />
+                                <Label Grid.Row="1" Grid.ColumnSpan="2" Text="{Binding MeasuredAt, StringFormat='{0:g}'}" Style="{StaticResource BodySecondary}" FontSize="12" />
+                            </Grid>
+                        </Border>
+                    </DataTemplate></CollectionView.ItemTemplate>
+                </CollectionView>
+                <Border Style="{StaticResource GlassCard}" Padding="18">
+                    <VerticalStackLayout Spacing="10">
+                        <Label Text="{Binding ReminderTitle}" Style="{StaticResource SectionTitle}" />
+                        <Entry Placeholder="{Binding MedicationLabel}" Text="{Binding MedicationName}" />
+                        <Entry Placeholder="{Binding DosageLabel}" Text="{Binding Dosage}" />
+                        <Grid ColumnDefinitions="*,*" ColumnSpacing="10">
+                            <DatePicker Date="{Binding ReminderDate}" />
+                            <TimePicker Grid.Column="1" Time="{Binding ReminderTime}" />
+                        </Grid>
+                        <Picker Title="{Binding ScheduleLabel}" ItemsSource="{Binding ReminderRepeatOptions}" SelectedIndex="{Binding SelectedReminderRepeatIndex}" />
+                        <Editor Placeholder="{Binding InstructionsLabel}" Text="{Binding ReminderInstructions}" AutoSize="TextChanges" />
+                        <Button Text="{Binding AddReminderText}" Command="{Binding AddReminderCommand}" Style="{StaticResource PrimaryButton}" />
+                    </VerticalStackLayout>
+                </Border>
+                <CollectionView ItemsSource="{Binding Reminders}" SelectionMode="None" HeightRequest="300">
+                    <CollectionView.EmptyView><Label Text="{Binding RemindersEmpty}" Style="{StaticResource BodySecondary}" Padding="10" /></CollectionView.EmptyView>
+                    <CollectionView.ItemTemplate><DataTemplate x:DataType="models:MedicationReminderCard">
+                        <Border Style="{StaticResource SubtleCard}" Padding="14" Margin="0,0,0,8">
+                            <VerticalStackLayout Spacing="7">
+                                <Grid ColumnDefinitions="*,Auto">
+                                    <Label Text="{Binding MedicationName}" FontAttributes="Bold" FontSize="16" />
+                                    <Label Grid.Column="1" Text="{Binding StatusLabel}" Style="{StaticResource BodySecondary}" />
+                                </Grid>
+                                <Label Text="{Binding Dosage}" Style="{StaticResource BodySecondary}" />
+                                <Label Text="{Binding ScheduledAt, StringFormat='{0:g}'}" Style="{StaticResource BodySecondary}" FontSize="12" />
+                                <Label Text="{Binding ScheduleLabel}" Style="{StaticResource BodySecondary}" FontSize="12" />
+                                <Label Text="{Binding LastDoseStatusLabel}" Style="{StaticResource BodySecondary}" FontSize="12" />
+                                <Grid ColumnDefinitions="*,*" RowDefinitions="Auto,Auto" ColumnSpacing="8" RowSpacing="6" IsVisible="{Binding IsScheduled}">
+                                    <Button Text="{Binding Source={x:Reference HealthRoot}, Path=BindingContext.TakenText}" Command="{Binding Source={x:Reference HealthRoot}, Path=BindingContext.MarkTakenCommand}" CommandParameter="{Binding .}" IsEnabled="{Binding CanActionDose}" Style="{StaticResource SecondaryButton}" />
+                                    <Button Grid.Column="1" Text="{Binding Source={x:Reference HealthRoot}, Path=BindingContext.MissedText}" Command="{Binding Source={x:Reference HealthRoot}, Path=BindingContext.MarkMissedCommand}" CommandParameter="{Binding .}" IsEnabled="{Binding CanActionDose}" Style="{StaticResource QuietButton}" />
+                                    <Button Grid.Row="1" Grid.ColumnSpan="2" Text="{Binding Source={x:Reference HealthRoot}, Path=BindingContext.CancelReminderText}" Command="{Binding Source={x:Reference HealthRoot}, Path=BindingContext.CancelReminderCommand}" CommandParameter="{Binding .}" IsVisible="{Binding CanCancel}" Style="{StaticResource QuietButton}" />
+                                </Grid>
+                            </VerticalStackLayout>
+                        </Border>
+                    </DataTemplate></CollectionView.ItemTemplate>
+                </CollectionView>
+                <Label Text="{Binding Message}" TextColor="{StaticResource Danger}" />
+                <ActivityIndicator IsRunning="{Binding IsBusy}" IsVisible="{Binding IsBusy}" Style="{StaticResource LoadingIndicator}" />
+            </VerticalStackLayout>
+        </ScrollView>
+    </RefreshView>
+</ContentPage>

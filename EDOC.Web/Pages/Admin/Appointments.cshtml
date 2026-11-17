@@ -1,0 +1,37 @@
+@page "/admin/appointments"
+@model EDOC.Web.Pages.Admin.AppointmentsModel
+@{
+    ViewData["Title"] = "Appointment management";
+}
+<div class="page-heading">
+    <div><div class="eyebrow">ADMINISTRATION · CARE OPERATIONS</div><h1>Appointments</h1><p class="muted">Review bookings and manage valid appointment status transitions.</p></div>
+    <a class="button button-secondary" asp-page="/Admin/Reports">Appointment reports</a>
+</div>
+@if (!string.IsNullOrWhiteSpace(Model.Error)) { <div class="alert alert-error" role="alert">@Model.Error</div> }
+@if (!string.IsNullOrWhiteSpace(Model.Message)) { <div class="alert @(Model.IsError ? "alert-error" : "alert-success")" role="status">@Model.Message</div> }
+<section class="glass-panel table-panel">
+    <form method="get" class="inline-search">
+        <label class="search-field"><span aria-hidden="true">⌕</span><input name="search" value="@Model.Search" placeholder="Patient, doctor or appointment ID" /></label>
+        <select name="status"><option value="">All statuses</option>@foreach (var value in new[] { "Pending", "Confirmed", "Completed", "Cancelled" }) { <option value="@value" selected="@(Model.Status == value)">@value</option> }</select>
+        <select name="hospitalId"><option value="">All hospitals</option>@foreach (var hospital in Model.Hospitals) { <option value="@hospital.Id" selected="@(hospital.Id == Model.HospitalId)">@hospital.Name</option> }</select>
+        <select name="doctorId"><option value="">All doctors</option>@foreach (var doctor in Model.Doctors) { <option value="@doctor.Id" selected="@(doctor.Id == Model.DoctorId)">@doctor.FullName</option> }</select>
+        <input type="date" name="date" value="@(Model.Date?.ToString("yyyy-MM-dd"))" aria-label="Appointment date" />
+        <button class="button button-primary" type="submit">Apply filters</button>
+    </form>
+    <div class="section-heading"><div><div class="eyebrow">BOOKING DIRECTORY</div><h2>@Model.Total.ToString("N0") appointments</h2></div></div>
+    @if (Model.Appointments.Count > 0)
+    {
+        <div class="table-scroll"><table><thead><tr><th>Patient</th><th>Doctor</th><th>Appointment</th><th>Status</th><th>Manage</th></tr></thead><tbody>
+        @foreach (var item in Model.Appointments)
+        {
+            <tr><td>@item.PatientName</td><td>@item.DoctorName</td><td>@item.StartsAt.ToLocalTime().ToString("dd MMM yyyy · h:mm tt")</td><td><span class="status-chip @(item.Status == "Confirmed" ? "status-green" : item.Status == "Cancelled" ? "status-red" : item.Status == "Completed" ? "status-blue" : "status-amber")">@item.Status</span></td><td><div class="action-pair">
+                @if (item.Status == "Pending") { <form method="post" asp-page-handler="Status" asp-route-search="@Model.Search" asp-route-currentStatus="@Model.Status" asp-route-hospitalId="@Model.HospitalId" asp-route-doctorId="@Model.DoctorId" asp-route-date="@Model.Date" asp-route-pageNumber="@Model.PageNumber"><input type="hidden" name="id" value="@item.Id" /><input type="hidden" name="status" value="Confirmed" /><button class="button button-small button-primary" type="submit">Confirm</button></form><form method="post" asp-page-handler="Status" asp-route-search="@Model.Search" asp-route-currentStatus="@Model.Status" asp-route-hospitalId="@Model.HospitalId" asp-route-doctorId="@Model.DoctorId" asp-route-date="@Model.Date" asp-route-pageNumber="@Model.PageNumber"><input type="hidden" name="id" value="@item.Id" /><input type="hidden" name="status" value="Cancelled" /><button class="button button-small button-quiet" type="submit">Cancel</button></form> }
+                else if (item.Status == "Confirmed") { <form method="post" asp-page-handler="Status" asp-route-search="@Model.Search" asp-route-currentStatus="@Model.Status" asp-route-hospitalId="@Model.HospitalId" asp-route-doctorId="@Model.DoctorId" asp-route-date="@Model.Date" asp-route-pageNumber="@Model.PageNumber"><input type="hidden" name="id" value="@item.Id" /><input type="hidden" name="status" value="Completed" /><button class="button button-small button-secondary" type="submit">Complete</button></form><form method="post" asp-page-handler="Status" asp-route-search="@Model.Search" asp-route-currentStatus="@Model.Status" asp-route-hospitalId="@Model.HospitalId" asp-route-doctorId="@Model.DoctorId" asp-route-date="@Model.Date" asp-route-pageNumber="@Model.PageNumber"><input type="hidden" name="id" value="@item.Id" /><input type="hidden" name="status" value="Cancelled" /><button class="button button-small button-quiet" type="submit">Cancel</button></form> }
+                <input type="hidden" name="search" value="@Model.Search" /><input type="hidden" name="currentStatus" value="@Model.Status" /><input type="hidden" name="hospitalId" value="@Model.HospitalId" /><input type="hidden" name="doctorId" value="@Model.DoctorId" /><input type="hidden" name="date" value="@Model.Date" /><input type="hidden" name="pageNumber" value="@Model.PageNumber" />
+            </div></td></tr>
+        }
+        </tbody></table></div>
+        <nav class="pagination" aria-label="Appointment pages"><span class="muted">Page @Model.PageNumber of @Model.PageCount</span>@if (Model.PageNumber > 1) { <a class="button button-secondary button-small" asp-page="/Admin/Appointments" asp-route-search="@Model.Search" asp-route-status="@Model.Status" asp-route-hospitalId="@Model.HospitalId" asp-route-doctorId="@Model.DoctorId" asp-route-date="@Model.Date" asp-route-pageNumber="@(Model.PageNumber - 1)">Previous</a> }@if (Model.PageNumber < Model.PageCount) { <a class="button button-secondary button-small" asp-page="/Admin/Appointments" asp-route-search="@Model.Search" asp-route-status="@Model.Status" asp-route-hospitalId="@Model.HospitalId" asp-route-doctorId="@Model.DoctorId" asp-route-date="@Model.Date" asp-route-pageNumber="@(Model.PageNumber + 1)">Next</a> }</nav>
+    }
+    else { <div class="empty-state">No appointments match these filters.</div> }
+</section>

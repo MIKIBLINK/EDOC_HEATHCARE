@@ -1,0 +1,36 @@
+@using Microsoft.AspNetCore.Authentication
+@inject IConfiguration Configuration
+@inject IWebHostEnvironment Environment
+@{
+    var roles = User.Claims.Where(c => c.Type == System.Security.Claims.ClaimTypes.Role).Select(c => c.Value).ToArray();
+    var admin = User.IsInRole("Administrator") || User.IsInRole("SuperAdmin");
+}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>@ViewData["Title"] · E-DOC Portal</title>
+    <link rel="stylesheet" href="~/portal.css" asp-append-version="true" />
+    @if (Environment.IsDevelopment() && Configuration.GetValue<bool>("Directory:DemoMode")) { <link rel="stylesheet" href="~/demo-mode.css" asp-append-version="true" /> }
+    @await RenderSectionAsync("Styles", required: false)
+</head>
+<body>
+    <header class="topbar">
+        <a class="brand" asp-page="/Login"><span class="brand-mark">+</span><span>E-DOC <small>HEALTHCARE PORTAL</small></span></a>
+        @if (Environment.IsDevelopment() && Configuration.GetValue<bool>("Directory:DemoMode")) { <span class="demo-mode-chip">DEMO MODE · NOT VERIFIED</span> }
+        @if (User.Identity?.IsAuthenticated == true)
+        {
+            <nav class="topnav">
+                @if (admin) { <a asp-page="/Admin/Index">Overview</a><a asp-page="/Admin/Directory">Facility directory</a><a asp-page="/Admin/Doctors">Doctors</a><a asp-page="/Admin/Patients">Patients</a><a asp-page="/Admin/Staff">Staff</a><a asp-page="/Admin/Appointments">Appointments</a><a asp-page="/Admin/Reports">Reports</a> }
+                @if (User.IsInRole("HospitalAdmin")) { <a asp-page="/HospitalAdmin/Index">Hospital overview</a> }
+                @if (User.IsInRole("HospitalStaff")) { <a asp-page="/Hospital/Index">Appointments</a> }
+            </nav>
+            <div class="account"><span>@User.Identity.Name</span><form method="post" asp-page="/Logout"><button class="button button-quiet" type="submit">Sign out</button></form></div>
+        }
+    </header>
+    <main class="page-shell">@RenderBody()</main>
+    <footer class="footer">E-DOC Healthcare · Secure care coordination</footer>
+    @await RenderSectionAsync("Scripts", required: false)
+</body>
+</html>

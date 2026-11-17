@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="EDOC.Mobile.OnboardingPage"
+             Shell.NavBarIsVisible="False"
+             Shell.TabBarIsVisible="False"
+             Background="{StaticResource CanvasGlowBrush}">
+    <Grid RowDefinitions="Auto,*,Auto" Padding="24,24,24,18" RowSpacing="16">
+        <VerticalStackLayout Spacing="6" HorizontalOptions="Center">
+            <Label Text="E-DOC" FontSize="15" FontAttributes="Bold" TextColor="{StaticResource Blue}" HorizontalTextAlignment="Center" />
+            <Label Text="{Binding HeaderText}" FontSize="26" FontAttributes="Bold" HorizontalTextAlignment="Center" />
+        </VerticalStackLayout>
+
+        <ScrollView Grid.Row="1" VerticalScrollBarVisibility="Never">
+            <VerticalStackLayout Spacing="12" MaximumWidthRequest="560" HorizontalOptions="Center" VerticalOptions="Center">
+                <Border Style="{StaticResource GlassCard}" Padding="16">
+                    <Grid ColumnDefinitions="54,*" ColumnSpacing="14">
+                        <Border WidthRequest="50" HeightRequest="50" Background="{StaticResource HeroBrush}" StrokeThickness="0" StrokeShape="RoundRectangle 17" VerticalOptions="Start">
+                            <Image Source="doctors.svg" WidthRequest="26" HeightRequest="26" HorizontalOptions="Center" VerticalOptions="Center" />
+                        </Border>
+                        <VerticalStackLayout Grid.Column="1" Spacing="6">
+                            <Label Text="{Binding StepOneTitle}" FontSize="17" FontAttributes="Bold" LineBreakMode="WordWrap" />
+                            <Label Text="{Binding StepOneSubtitle}" Style="{StaticResource BodySecondary}" LineBreakMode="WordWrap" />
+                        </VerticalStackLayout>
+                    </Grid>
+                </Border>
+
+                <Border Style="{StaticResource GlassCard}" Padding="16">
+                    <Grid ColumnDefinitions="54,*" ColumnSpacing="14">
+                        <Border WidthRequest="50" HeightRequest="50" BackgroundColor="{StaticResource Mint}" StrokeThickness="0" StrokeShape="RoundRectangle 17" VerticalOptions="Start">
+                            <Image Source="records.svg" WidthRequest="24" HeightRequest="24" HorizontalOptions="Center" VerticalOptions="Center" />
+                        </Border>
+                        <VerticalStackLayout Grid.Column="1" Spacing="6">
+                            <Label Text="{Binding StepTwoTitle}" FontSize="17" FontAttributes="Bold" LineBreakMode="WordWrap" />
+                            <Label Text="{Binding StepTwoSubtitle}" Style="{StaticResource BodySecondary}" LineBreakMode="WordWrap" />
+                        </VerticalStackLayout>
+                    </Grid>
+                </Border>
+
+                <Border Style="{StaticResource GlassCard}" Padding="16">
+                    <Grid ColumnDefinitions="54,*" ColumnSpacing="14">
+                        <Border WidthRequest="50" HeightRequest="50" BackgroundColor="{StaticResource SoftGreen}" StrokeThickness="0" StrokeShape="RoundRectangle 17" VerticalOptions="Start">
+                            <Image Source="assistant.svg" WidthRequest="24" HeightRequest="24" HorizontalOptions="Center" VerticalOptions="Center" />
+                        </Border>
+                        <VerticalStackLayout Grid.Column="1" Spacing="6">
+                            <Label Text="{Binding StepThreeTitle}" FontSize="17" FontAttributes="Bold" LineBreakMode="WordWrap" />
+                            <Label Text="{Binding StepThreeSubtitle}" Style="{StaticResource BodySecondary}" LineBreakMode="WordWrap" />
+                        </VerticalStackLayout>
+                    </Grid>
+                </Border>
+            </VerticalStackLayout>
+        </ScrollView>
+
+        <VerticalStackLayout Grid.Row="2" Spacing="6" MaximumWidthRequest="560" HorizontalOptions="Center">
+            <Button Text="{Binding GetStartedText}" Clicked="GetStarted_Clicked" Style="{StaticResource PrimaryButton}" />
+            <Button Text="{Binding SkipText}" Clicked="Skip_Clicked" Style="{StaticResource QuietButton}" />
+        </VerticalStackLayout>
+    </Grid>
+</ContentPage>

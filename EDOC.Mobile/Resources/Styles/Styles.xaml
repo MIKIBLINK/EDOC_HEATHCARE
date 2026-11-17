@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<ResourceDictionary xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml">
+    <LinearGradientBrush x:Key="HeroBrush" StartPoint="0,0" EndPoint="1,1">
+        <GradientStop Color="#1677D2" Offset="0.0" />
+        <GradientStop Color="#36B7C9" Offset="1.0" />
+    </LinearGradientBrush>
+    <LinearGradientBrush x:Key="CanvasGlowBrush" StartPoint="0,0" EndPoint="1,1">
+        <GradientStop Color="{AppThemeBinding Light=#EAF5FF, Dark=#102033}" Offset="0.0" />
+        <GradientStop Color="{AppThemeBinding Light=#F4F8FC, Dark=#0D1825}" Offset="0.55" />
+        <GradientStop Color="{AppThemeBinding Light=#EFFAFC, Dark=#142436}" Offset="1.0" />
+    </LinearGradientBrush>
+    <Style TargetType="ContentPage">
+        <Setter Property="Padding" Value="0" />
+        <Setter Property="BackgroundColor" Value="{AppThemeBinding Light={StaticResource CanvasLight}, Dark={StaticResource CanvasDark}}" />
+    </Style>
+    <Style TargetType="Label">
+        <Setter Property="FontFamily" Value="{DynamicResource AppFontFamily}" />
+        <Setter Property="TextColor" Value="{AppThemeBinding Light={StaticResource InkLight}, Dark={StaticResource InkDark}}" />
+    </Style>
+    <Style x:Key="PageTitle" TargetType="Label">
+        <Setter Property="FontFamily" Value="{DynamicResource AppFontFamily}" />
+        <Setter Property="FontSize" Value="{StaticResource TypeLargeTitle}" />
+        <Setter Property="FontAttributes" Value="Bold" />
+        <Setter Property="TextColor" Value="{AppThemeBinding Light={StaticResource InkLight}, Dark={StaticResource InkDark}}" />
+        <Setter Property="Margin" Value="0,6,0,4" />
+    </Style>
+    <Style x:Key="SectionTitle" TargetType="Label">
+        <Setter Property="FontFamily" Value="{DynamicResource AppFontFamily}" />
+        <Setter Property="FontSize" Value="{StaticResource TypeBodyLarge}" />
+        <Setter Property="FontAttributes" Value="Bold" />
+        <Setter Property="TextColor" Value="{AppThemeBinding Light={StaticResource InkLight}, Dark={StaticResource InkDark}}" />
+    </Style>
+    <Style x:Key="BodySecondary" TargetType="Label">
+        <Setter Property="FontFamily" Value="{DynamicResource AppFontFamily}" />
+        <Setter Property="FontSize" Value="{StaticResource TypeFootnote}" />
+        <Setter Property="TextColor" Value="{AppThemeBinding Light={StaticResource MutedLight}, Dark={StaticResource MutedDark}}" />
+    </Style>
+    <Style x:Key="Eyebrow" TargetType="Label">
+        <Setter Property="FontFamily" Value="{DynamicResource AppFontFamily}" />
+        <Setter Property="FontSize" Value="{StaticResource TypeCaption}" />
+        <Setter Property="FontAttributes" Value="Bold" />
+        <Setter Property="TextColor" Value="{StaticResource Blue}" />
+        <Setter Property="CharacterSpacing" Value="1.2" />
+    </Style>
+    <Style TargetType="Shell">
+        <Setter Property="Shell.BackgroundColor" Value="{AppThemeBinding Light={StaticResource TabBarLight}, Dark={StaticResource TabBarDark}}" />
+        <Setter Property="Shell.ForegroundColor" Value="{StaticResource Blue}" />
+        <Setter Property="Shell.TitleColor" Value="{AppThemeBinding Light={StaticResource InkLight}, Dark={StaticResource InkDark}}" />
+        <Setter Property="Shell.TabBarBackgroundColor" Value="{AppThemeBinding Light={StaticResource TabBarLight}, Dark={StaticResource TabBarDark}}" />
+        <Setter Property="Shell.TabBarForegroundColor" Value="{StaticResource Blue}" />
+        <Setter Property="Shell.TabBarUnselectedColor" Value="{AppThemeBinding Light={StaticResource MutedLight}, Dark={StaticResource MutedDark}}" />
+    </Style>
+</ResourceDictionary>

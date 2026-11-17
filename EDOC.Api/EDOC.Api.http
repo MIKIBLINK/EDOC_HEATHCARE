@@ -1,0 +1,16 @@
+@EDOC.Api_HostAddress = https://localhost:5155
+
+GET {{EDOC.Api_HostAddress}}/health
+Accept: application/json
+
+###
+
+GET {{EDOC.Api_HostAddress}}/api/doctors?page=1&pageSize=20
+Accept: application/json
+
+###
+
+GET {{EDOC.Api_HostAddress}}/api/doctors/specialties
+Accept: application/json
+
+###

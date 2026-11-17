@@ -1,0 +1,67 @@
+@page "/admin/doctors"
+@model EDOC.Web.Pages.Admin.DoctorsModel
+@{
+    ViewData["Title"] = "Add a doctor";
+}
+<div class="page-heading">
+    <div><div class="eyebrow">DOCTOR DIRECTORY</div><h1>Add a doctor profile</h1><p class="muted">Connect an existing E-DOC account to a specialty and hospital so the doctor can publish appointment availability.</p></div>
+    <div class="heading-actions"><a class="button button-quiet" asp-page="/Admin/Index">&larr; Overview</a><a class="button button-secondary" asp-page="/Admin/Directory">Facility directory</a></div>
+</div>
+
+@if (!string.IsNullOrWhiteSpace(Model.Message))
+{
+    <div class="alert @(Model.IsError ? "alert-error" : "alert-success")" role="status">@Model.Message</div>
+}
+
+<section class="glass-panel facility-form">
+    <div class="section-heading"><div><div class="eyebrow">PROFILE SETUP</div><h2>Doctor and hospital assignment</h2></div></div>
+    @if (Model.AvailableUsers.Count == 0 || Model.Specialties.Count == 0 || Model.Hospitals.Count == 0)
+    {
+        <div class="empty-state">Add an active user, specialty, and active hospital before creating a doctor profile.</div>
+    }
+    <form method="post" asp-page-handler="Create">
+        <div class="field-grid">
+            <label asp-for="Input.UserId">Existing user account <span class="required-mark">*</span>
+                <select asp-for="Input.UserId" required>
+                    <option value="">Choose an account</option>
+                    @foreach (var user in Model.AvailableUsers)
+                    {
+                        <option value="@user.Id">@user.FullName (@string.Join(", ", user.Roles))</option>
+                    }
+                </select>
+            </label>
+            <label asp-for="Input.SpecialtyId">Specialty <span class="required-mark">*</span>
+                <select asp-for="Input.SpecialtyId" required>
+                    <option value="">Choose a specialty</option>
+                    @foreach (var specialty in Model.Specialties)
+                    {
+                        <option value="@specialty.Id">@specialty.Name@(string.IsNullOrWhiteSpace(specialty.NameKm) ? "" : $" · {specialty.NameKm}")</option>
+                    }
+                </select>
+            </label>
+            <label asp-for="Input.HospitalId">Hospital <span class="required-mark">*</span>
+                <select asp-for="Input.HospitalId" required>
+                    <option value="">Choose a hospital</option>
+                    @foreach (var hospital in Model.Hospitals)
+                    {
+                        <option value="@hospital.Id">@hospital.Name@(string.IsNullOrWhiteSpace(hospital.Province) ? "" : $" · {hospital.Province}")</option>
+                    }
+                </select>
+            </label>
+            <label asp-for="Input.Qualifications">Qualifications
+                <input asp-for="Input.Qualifications" maxlength="300" placeholder="Only enter provided credentials" />
+            </label>
+            <label asp-for="Input.YearsExperience">Years of experience
+                <input asp-for="Input.YearsExperience" type="number" min="0" max="80" />
+            </label>
+            <label asp-for="Input.ConsultationFee">Consultation fee
+                <input asp-for="Input.ConsultationFee" type="number" min="0" max="100000" step="0.01" />
+            </label>
+            <label class="full-row" asp-for="Input.Biography">Biography
+                <textarea asp-for="Input.Biography" maxlength="4000" rows="4"></textarea>
+            </label>
+        </div>
+        <p class="form-hint">After the profile is created, the doctor must publish future availability in the E-DOC mobile app. Patients can book only time slots the doctor has published.</p>
+        <div class="form-actions"><button class="button button-primary" type="submit" disabled="@(Model.AvailableUsers.Count == 0 || Model.Specialties.Count == 0 || Model.Hospitals.Count == 0)">Create doctor profile</button></div>
+    </form>
+</section>

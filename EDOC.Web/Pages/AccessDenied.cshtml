@@ -1,0 +1,10 @@
+@page "/access-denied"
+@{
+    ViewData["Title"] = "Access restricted";
+}
+<section class="glass-panel empty-panel">
+    <div class="empty-icon">⌑</div><div class="eyebrow">ROLE RESTRICTED</div>
+    <h1>This workspace is not available to your role.</h1>
+    <p class="muted">Ask your E-DOC administrator if you believe you need access.</p>
+    <a class="button button-primary" asp-page="/Login">Return to sign in</a>
+</section>

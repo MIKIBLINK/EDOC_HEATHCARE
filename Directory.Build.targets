@@ -1,0 +1,12 @@
+<Project>
+  <Target Name="EDOC_SelectAndroidManifest"
+          BeforeTargets="PrepareForBuild;_GetAndroidPackageName;_ValidateAndroidPackageProperties;_GenerateJavaStubs;_ManifestMerger"
+          Condition="'$(MSBuildProjectName)' == 'EDOC.Mobile' and '$(TargetFramework)' == 'net10.0-android'">
+    <PropertyGroup>
+      <AndroidManifest Condition="'$(Configuration)' == 'Debug'">Platforms\Android\AndroidManifest.Debug.xml</AndroidManifest>
+      <AndroidManifest Condition="'$(Configuration)' != 'Debug'">Platforms\Android\AndroidManifest.xml</AndroidManifest>
+      <_AndroidManifestAbs>$(ProjectDir)$(AndroidManifest)</_AndroidManifestAbs>
+    </PropertyGroup>
+    <Message Text="E-DOC Android $(Configuration) manifest: $(_AndroidManifestAbs)" Importance="High" />
+  </Target>
+</Project>

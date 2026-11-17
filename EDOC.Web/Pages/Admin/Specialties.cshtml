@@ -1,0 +1,32 @@
+@page "/admin/specialties"
+@model EDOC.Web.Pages.Admin.SpecialtiesModel
+@{
+    ViewData["Title"] = "Specialties";
+}
+<div class="page-heading">
+    <div><div class="eyebrow">CLINICAL DIRECTORY</div><h1>Medical specialties</h1><p class="muted">Maintain the reusable specialty list used across doctor and facility profiles.</p></div>
+    <a class="button button-quiet" asp-page="/Admin/Directory">← Facility directory</a>
+</div>
+@if (!string.IsNullOrWhiteSpace(Model.Message)) { <div class="alert @(Model.IsError ? "alert-error" : "alert-success")" role="alert">@Model.Message</div> }
+<section class="glass-panel summary-panel specialty-create">
+    <div class="section-heading"><div><div class="eyebrow">ADD SPECIALTY</div><h2>Create a directory entry</h2></div></div>
+    <form method="post" asp-page-handler="Create">
+        <div class="field-grid"><label>English name<input name="name" maxlength="120" required /></label><label>Khmer name<input name="nameKm" maxlength="160" /></label></div>
+        <div class="form-actions"><button class="button button-primary" type="submit">Add specialty</button></div>
+    </form>
+</section>
+<div class="list-meta"><span><strong>@Model.Items.Count</strong> active specialty entries</span><span>Entries are retained to preserve existing doctor and hospital relationships.</span></div>
+<section class="specialty-grid">
+    @foreach (var item in Model.Items)
+    {
+        <article class="glass-panel specialty-item">
+            <div class="eyebrow">DIRECTORY ENTRY</div>
+            <form method="post" asp-page-handler="Update">
+                <input type="hidden" name="id" value="@item.Id" />
+                <label>English name<input name="name" value="@item.Name" maxlength="120" required /></label>
+                <label>Khmer name<input name="nameKm" value="@item.NameKm" maxlength="160" /></label>
+                <div class="form-actions"><button class="button button-secondary" type="submit">Save changes</button></div>
+            </form>
+        </article>
+    }
+</section>

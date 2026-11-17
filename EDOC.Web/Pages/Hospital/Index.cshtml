@@ -1,0 +1,26 @@
+@page "/hospital"
+@model EDOC.Web.Pages.Hospital.IndexModel
+@{
+    ViewData["Title"] = "Hospital appointments";
+}
+<div class="page-heading">
+    <div><div class="eyebrow">HOSPITAL WORKSPACE</div><h1>Appointment coordination</h1><p class="muted">Manage appointments for the hospital assigned to your account.</p></div>
+    <span class="status-chip status-green">Hospital access active</span>
+</div>
+@if (!string.IsNullOrWhiteSpace(Model.Message)) { <div class="alert @(Model.IsError ? "alert-error" : "alert-success")" role="status">@Model.Message</div> }
+<section class="glass-panel table-panel">
+    <div class="section-heading"><div><div class="eyebrow">CARE SCHEDULE</div><h2>Appointments</h2></div><span class="status-chip status-blue">@Model.Total assigned</span></div>
+    @if (Model.Items.Count > 0)
+    {
+        <div class="table-scroll"><table><thead><tr><th>Patient</th><th>Doctor</th><th>Date &amp; time</th><th>Visit</th><th>Status</th><th>Action</th></tr></thead><tbody>
+        @foreach (var item in Model.Items)
+        {
+            <tr><td><strong>@item.PatientName</strong></td><td>@item.DoctorName</td><td>@item.StartsAt.ToLocalTime().ToString("dd MMM yyyy · h:mm tt")</td><td>@(item.IsTelehealth ? "Remote" : "In person")</td><td><span class="status-chip @Model.StatusClass(item.Status)">@item.Status</span></td><td>
+                @if (item.Status == "Pending") { <form method="post" asp-page-handler="Status"><input type="hidden" name="id" value="@item.Id" /><input type="hidden" name="status" value="Confirmed" /><button class="button button-small button-primary" type="submit">Confirm</button></form> }
+                else if (item.Status == "Confirmed") { <form method="post" asp-page-handler="Status"><input type="hidden" name="id" value="@item.Id" /><input type="hidden" name="status" value="Completed" /><button class="button button-small button-secondary" type="submit">Complete</button></form> }
+            </td></tr>
+        }
+        </tbody></table></div>
+    }
+    else if (!Model.IsError) { <div class="empty-state">No appointments are assigned to your hospital yet.</div> }
+</section>

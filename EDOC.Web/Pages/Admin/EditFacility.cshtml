@@ -1,0 +1,223 @@
+@page "/admin/directory/edit"
+@model EDOC.Web.Pages.Admin.EditFacilityModel
+@{
+    ViewData["Title"] = Model.IsEditing ? "Edit facility" : "Add facility";
+}
+@section Styles {
+    <link rel="stylesheet" href="~/facility-form.css" asp-append-version="true" />
+}
+<div class="page-heading">
+    <div>
+        <div class="eyebrow">ADMINISTRATOR · FACILITY DIRECTORY</div>
+        <h1>@(Model.IsEditing ? "Edit facility" : "Add a facility")</h1>
+        <p class="muted">Manage facility identity, contact information, location, services, specialties, and verification.</p>
+    </div>
+    <a class="button button-quiet" asp-page="/Admin/Directory">← Facility directory</a>
+</div>
+
+@if (Model.DemoMode)
+{
+    <div class="demo-warning" role="note"><strong>Demo mode is enabled.</strong> Source URLs and verification dates are optional. Entries saved without evidence are marked unverified; use fictional/demo records only and do not present them as real verified facilities.</div>
+}
+
+@if (!string.IsNullOrWhiteSpace(Model.Message))
+{
+    <div class="alert @(Model.IsError ? "alert-error" : "alert-success")" role="alert">@Model.Message</div>
+}
+
+@if (Model.Locations.Provinces.Count > 0)
+{
+    <form method="post" class="glass-panel edit-panel facility-form">
+        <input asp-for="Input.Id" type="hidden" />
+
+        <section class="form-section">
+            <div class="section-heading"><div><div class="eyebrow">FACILITY PROFILE</div><h2>Identity and contact</h2></div></div>
+            <div class="field-grid">
+                <label>Official English name <span class="required-mark">*</span>
+                    <input asp-for="Input.Name" maxlength="200" autocomplete="organization" required />
+                    <span asp-validation-for="Input.Name" class="field-error"></span>
+                </label>
+                <label>Khmer name
+                    <input asp-for="Input.NameKm" maxlength="240" lang="km" />
+                    <span asp-validation-for="Input.NameKm" class="field-error"></span>
+                </label>
+                <label>Facility type
+                    <select asp-for="Input.FacilityType">
+                        <option value="Unknown">Not verified</option>
+                        <option value="NationalHospital">National hospital</option>
+                        <option value="ProvincialHospital">Provincial hospital</option>
+                        <option value="ReferralHospital">Referral hospital</option>
+                        <option value="SpecialistHospital">Specialist hospital</option>
+                        <option value="MedicalCenter">Medical center</option>
+                        <option value="Clinic">Clinic</option>
+                    </select>
+                </label>
+                <label>Ownership
+                    <select asp-for="Input.Ownership">
+                        <option value="Unknown">Not verified</option>
+                        <option value="Public">Public</option>
+                        <option value="Private">Private</option>
+                    </select>
+                </label>
+                <label>Phone
+                    <input asp-for="Input.Phone" type="tel" maxlength="32" autocomplete="tel" />
+                    <span asp-validation-for="Input.Phone" class="field-error"></span>
+                </label>
+                <label>Email
+                    <input asp-for="Input.Email" type="email" maxlength="256" autocomplete="email" />
+                    <span asp-validation-for="Input.Email" class="field-error"></span>
+                </label>
+                <label>Official website
+                    <input asp-for="Input.Website" type="url" maxlength="1000" placeholder="https://" />
+                    <span asp-validation-for="Input.Website" class="field-error"></span>
+                </label>
+                <label>Opening hours
+                    <input asp-for="Input.OpeningHours" maxlength="240" placeholder="Only enter verified hours" />
+                </label>
+                <label class="full-row">Address
+                    <textarea asp-for="Input.Address" maxlength="500" rows="2"></textarea>
+                </label>
+            </div>
+        </section>
+
+        <section class="form-section">
+            <div class="section-heading"><div><div class="eyebrow">LOCATION</div><h2>Facility location</h2></div></div>
+            <div class="field-grid">
+                <label>Province <span class="required-mark">*</span>
+                    <select asp-for="Input.ProvinceCode" id="provinceCode" required>
+                        <option value="">Choose a province</option>
+                        @foreach (var province in Model.Locations.Provinces)
+                        {
+                            <option value="@province.Code">@province.Name@(string.IsNullOrWhiteSpace(province.NameKm) ? "" : $" · {province.NameKm}")</option>
+                        }
+                    </select>
+                    <span asp-validation-for="Input.ProvinceCode" class="field-error"></span>
+                </label>
+                <label>District
+                    <select asp-for="Input.DistrictCode" id="districtCode">
+                        <option value="">Choose a district</option>
+                        @foreach (var district in Model.Locations.Districts)
+                        {
+                            <option value="@district.Code" data-province="@district.ProvinceCode">@district.Name</option>
+                        }
+                    </select>
+                </label>
+                <label>Commune
+                    <select asp-for="Input.CommuneCode" id="communeCode">
+                        <option value="">Choose a commune</option>
+                        @foreach (var commune in Model.Locations.Communes)
+                        {
+                            <option value="@commune.Code" data-district="@commune.DistrictCode">@commune.Name</option>
+                        }
+                    </select>
+                </label>
+                <label>Latitude
+                    <input asp-for="Input.Latitude" type="number" step="any" min="-90" max="90" placeholder="Verified coordinates only" />
+                    <span asp-validation-for="Input.Latitude" class="field-error"></span>
+                </label>
+                <label>Longitude
+                    <input asp-for="Input.Longitude" type="number" step="any" min="-180" max="180" placeholder="Verified coordinates only" />
+                    <span asp-validation-for="Input.Longitude" class="field-error"></span>
+                </label>
+            </div>
+        </section>
+
+        <section class="form-section">
+            <div class="section-heading"><div><div class="eyebrow">CLINICAL SERVICES</div><h2>Services and specialties</h2></div></div>
+            <label class="full-label">Services <span class="muted">one verified service per line</span>
+                <textarea asp-for="Input.ServicesText" maxlength="4000" rows="4" placeholder="Emergency care&#10;Laboratory&#10;Imaging"></textarea>
+                <span asp-validation-for="Input.ServicesText" class="field-error"></span>
+            </label>
+            <fieldset class="specialty-picker">
+                <legend>Verified specialties provided at this facility</legend>
+                <p class="form-hint">Selecting specialties requires a source URL and verification date below.</p>
+                @if (Model.Specialties.Count == 0)
+                {
+                    <p class="muted">Add specialties from the directory page first.</p>
+                }
+                else
+                {
+                    <div class="specialty-check-grid">
+                        @foreach (var specialty in Model.Specialties)
+                        {
+                            <label class="specialty-check">
+                                <input type="checkbox" name="Input.SpecialtyIds" value="@specialty.Id" checked="@(Model.Input.SpecialtyIds?.Contains(specialty.Id) ?? false)" />
+                                <span>@specialty.Name@if (!string.IsNullOrWhiteSpace(specialty.NameKm)) { <small lang="km">@specialty.NameKm</small> }</span>
+                            </label>
+                        }
+                    </div>
+                }
+            </fieldset>
+        </section>
+
+        <section class="form-section">
+            <div class="section-heading"><div><div class="eyebrow">VERIFICATION AND VISIBILITY</div><h2>Directory status</h2></div></div>
+            <div class="field-grid">
+                <label>NSSF participation
+                    <select asp-for="Input.NssfStatus">
+                        <option value="PENDING_VERIFICATION">Pending verification</option>
+                        <option value="NSSF">NSSF partner · verified</option>
+                        <option value="NON_NSSF">Not participating · verified</option>
+                    </select>
+                </label>
+                <label>Operating status
+                    <select asp-for="Input.OperationalStatus">
+                        <option value="PENDING_VERIFICATION">Pending verification</option>
+                        <option value="ACTIVE">Operating · verified</option>
+                        <option value="INACTIVE">Inactive</option>
+                    </select>
+                </label>
+                <label class="full-row">Verification source URL
+                    <input asp-for="Input.SourceUrl" type="url" maxlength="1000" placeholder="https://official-source.example/facility" />
+                    <span asp-validation-for="Input.SourceUrl" class="field-error"></span>
+                </label>
+                <label>Source publication date
+                    <input asp-for="Input.SourcePublishedOn" type="date" />
+                </label>
+                <label>Verified on
+                    <input asp-for="Input.VerifiedOn" type="date" />
+                </label>
+                <label class="check-row full-row"><input asp-for="Input.IsActive" /> Show this facility in the directory</label>
+            </div>
+            <p class="form-hint">Verified NSSF status, verified operating status, coordinates, ownership/type changes, and specialties require an official source and verification date. Unknown data can remain pending.</p>
+        </section>
+
+        <div class="form-actions">
+            <button class="button button-primary" type="submit">@(Model.IsEditing ? "Save facility changes" : "Add facility")</button>
+            <a class="button button-quiet" asp-page="/Admin/Directory">Cancel</a>
+        </div>
+    </form>
+}
+
+@section Scripts {
+    <script>
+        (() => {
+            const province = document.getElementById('provinceCode');
+            const district = document.getElementById('districtCode');
+            const commune = document.getElementById('communeCode');
+            if (!province || !district || !commune) return;
+
+            const filterDistricts = reset => {
+                if (reset) district.value = '';
+                for (const option of district.options) {
+                    if (!option.value) continue;
+                    option.hidden = option.dataset.province !== province.value;
+                }
+                if (district.selectedOptions.length && district.selectedOptions[0].hidden) district.value = '';
+            };
+            const filterCommunes = reset => {
+                if (reset) commune.value = '';
+                for (const option of commune.options) {
+                    if (!option.value) continue;
+                    option.hidden = option.dataset.district !== district.value;
+                }
+                if (commune.selectedOptions.length && commune.selectedOptions[0].hidden) commune.value = '';
+            };
+
+            province.addEventListener('change', () => { filterDistricts(true); filterCommunes(true); });
+            district.addEventListener('change', () => filterCommunes(true));
+            filterDistricts(false);
+            filterCommunes(false);
+        })();
+    </script>
+}
